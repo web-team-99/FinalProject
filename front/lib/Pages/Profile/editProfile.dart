@@ -2,21 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:test_url/Components/ProfileRoute/loginHeader.dart';
-import 'package:test_url/Pages/Profile/editProfile.dart';
+import 'package:test_url/Pages/Profile/showProfile.dart';
 
-import 'package:test_url/Setting/numbers.dart';
-import 'package:test_url/Setting/platform.dart';
-import 'package:test_url/Setting/strings.dart';
+import '../../Components/HomeRoute/ProjectAndServiceSuggest.dart';
+import '../../Components/HomeRoute/homeListHeader.dart';
+import '../../Setting/numbers.dart';
+import '../../Setting/platform.dart';
+import '../../Setting/strings.dart';
+import '../../Styles/animations.dart';
 
-import '../Styles/animations.dart';
-
-class ProfileRoute extends StatelessWidget {
-  TextEditingController signinEmailController = new TextEditingController();
-  TextEditingController signinPasswordController = new TextEditingController();
-  TextEditingController signupEmailController = new TextEditingController();
-  TextEditingController signupPasswordController = new TextEditingController();
-  TextEditingController signupRepeatPasswordController =
-      new TextEditingController();
+class EditProfile extends StatelessWidget {
   final _scrollController = ScrollController();
 
   @override
@@ -53,13 +48,14 @@ class ProfileRoute extends StatelessWidget {
             ),
             child: Column(
               children: [
-                LoginHeader('sign in'),
+                Text('Email@example.com'),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(
-                    controller: signinEmailController,
+                    initialValue: 'Sample Name',
+                    // controller: signinEmailController,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -67,35 +63,10 @@ class ProfileRoute extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(
-                    obscureText: true,
-                    controller: signinPasswordController,
+                    initialValue: 'Sample Education',
+                    // controller: signinEmailController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                RaisedButton(
-                  child: Text(
-                    'sign in',
-                    style: theme.textTheme.bodyText1,
-                  ),
-                  onPressed: () => {
-                    pushNewScreenWithRouteSettings(
-                      context,
-                      settings: null,
-                      screen: EditProfile(),
-                      pageTransitionAnimation: changePageAnimation,
-                    )
-                  },
-                ),
-                LoginHeader('sign up'),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: signupEmailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'Education',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -103,38 +74,76 @@ class ProfileRoute extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(
-                    obscureText: true,
-                    controller: signupPasswordController,
+                    initialValue: 'Sample Description',
+                    // controller: signinEmailController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: signupRepeatPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Repeat Password',
+                      labelText: 'Discription',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
                 RaisedButton(
                   child: Text(
-                    'sign up',
+                    'change',
+                    style: theme.textTheme.bodyText1,
+                  ),
+                  onPressed: () => {},
+                ),
+                RaisedButton(
+                  child: Text(
+                    'view profile',
                     style: theme.textTheme.bodyText1,
                   ),
                   onPressed: () => {
                     pushNewScreenWithRouteSettings(
                       context,
                       settings: null,
-                      screen: EditProfile(),
+                      screen: ShowProfile(),
                       pageTransitionAnimation: changePageAnimation,
                     )
                   },
+                ),
+                HomeListHeader(
+                  'Your Projects',
+                  () => {
+                    //TODO
+                  },
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  height: 175,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) =>
+                        ProjectAndServiceSuggest(
+                      'http://138.201.6.240:8001/media/blog_photos/increase-virgool.jpg',
+                      30,
+                      'sample project',
+                    ),
+                  ),
+                ),
+                HomeListHeader(
+                  'Your Services',
+                  () => {
+                    //TODO
+                  },
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  height: 175,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) =>
+                        ProjectAndServiceSuggest(
+                      'http://138.201.6.240:8001/media/blog_photos/omid4.jpg',
+                      100,
+                      'sample service',
+                    ),
+                  ),
                 ),
               ],
             ),

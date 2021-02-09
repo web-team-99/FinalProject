@@ -26,6 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-//.................... main features to do until 30 Azar, deadline of phase 1: ..........................
-//TODO: softWareTeam
