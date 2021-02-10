@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.front">
+    package="com.example.test_url">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="front"
+        android:label="test_url"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
