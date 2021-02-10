@@ -4,6 +4,7 @@ package routes
 
 import (
 	"fmt"
+	"webprj/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +16,8 @@ func test(c *gin.Context) {
 // InitializeRoutes api routes
 func InitializeRoutes(router *gin.Engine) {
 	api := router.Group("/api")
+
+	api.Use(middlewares.Connect)
 
 	indexRoutes(api)
 
