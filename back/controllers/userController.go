@@ -1,24 +1,86 @@
 package controllers
 
 import (
+	"fmt"
+	"time"
 	"webprj/models"
 
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
+// Login controller
 func Login(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 
 	user := models.User{}
 	err := c.Bind(&user)
 	if err != nil {
-		c.Error(err)
+		fmt.Println(err)
+		SendBadRequest(c, &gin.H{"message": "Invalid request body"})
 		return
 	}
 
+	// results := []models.User{}
+	result := models.User{}
+
+	// err = db.C(models.UserC).Find(bson.M{"email": user.Email}).All(&results)
+	err = db.C(models.UserC).Find(bson.M{"email": user.Email}).One(&result)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "email not found"})
+		return
+	}
+
+	if result.Password != user.Password {
+		SendBadRequest(c, &gin.H{"message": "password is wrong"})
+		return
+	}
+
+	SendOK(c, &gin.H{"user": &result})
+}
+
+// Register  controller
+func Register(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+
+	user := models.User{}
+	err := c.Bind(&user)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "Invalid request body"})
+		return
+	}
+	user.ID = bson.NewObjectId()
+	user.CreatedAt, user.UpdatedAt = time.Now(), time.Now()
+
+	if !isEmailNew(db, user.Email) {
+		SendBadRequest(c, &gin.H{"message": "email exist"})
+		return
+	}
+	if !isPhoneNew(db, user.Phone) {
+		SendBadRequest(c, &gin.H{"message": "phone exist"})
+		return
+	}
 	err = db.C(models.UserC).Insert(user)
 	if err != nil {
-		c.Error(err)
+		SendBadRequest(c, &gin.H{"message": "Error in the user insertion"})
+		return
 	}
+	SendOK(c, &gin.H{"user": &user})
+}
+
+func isPhoneNew(db *mgo.Database, phone string) bool {
+	count, err := db.C(models.UserC).Find(bson.M{"phone": phone}).Count()
+	if err != nil || count > 0 {
+		return false
+	}
+	return true
+}
+
+func isEmailNew(db *mgo.Database, email string) bool {
+	count, err := db.C(models.UserC).Find(bson.M{"email": email}).Count()
+	if err != nil || count > 0 {
+		return false
+	}
+	return true
 }
