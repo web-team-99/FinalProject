@@ -35,3 +35,6 @@ String manualApiUrl = apiServer + '/api/manual';
 String pricingsApiUrl = apiServer + '/api/pricings';
 String rulesApiUrl = apiServer + '/api/rules';
 String blogApiUrl = apiServer + '/api/blog';
+
+String projectsApiUrl = apiServer + '/api/projects';
+String servicesApiUrl = apiServer + '/api/services';

@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_url/Cubits/InternetStateCubit.dart';
+import 'package:test_url/Pages/CustomDialog.dart';
 
 import 'package:test_url/Setting/numbers.dart';
 import 'package:test_url/Setting/platform.dart';
 import 'package:test_url/Setting/strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessagesRoute extends StatefulWidget {
   @override
@@ -31,49 +34,58 @@ class _MessagesRouteState extends State<MessagesRoute> {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      appBar: isOnIos
-          ? CupertinoNavigationBar(
-              middle: Text(
-                messagesPageTitle,
-                style: theme.textTheme.headline5,
+        appBar: isOnIos
+            ? CupertinoNavigationBar(
+                middle: Text(
+                  messagesPageTitle,
+                  style: theme.textTheme.headline5,
+                ),
+              )
+            : AppBar(
+                title: Text(messagesPageTitle),
+                centerTitle: true,
+                textTheme: theme.textTheme,
               ),
-            )
-          : AppBar(
-              title: Text(messagesPageTitle),
-              centerTitle: true,
-              textTheme: theme.textTheme,
-            ),
-      backgroundColor: theme.backgroundColor,
-      body: Scrollbar(
-        controller: _scrollController,
-        isAlwaysShown: true,
-        child: SingleChildScrollView(
+        backgroundColor: theme.backgroundColor,
+        body: Scrollbar(
           controller: _scrollController,
-          child: Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(
-              bottom: pagesBottomMargin,
-              left: pagesRightAndLeftMargin(_width, _mobileView),
-              right: pagesRightAndLeftMargin(_width, _mobileView),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'messages state: ' + _state.toString(),
-                  style: theme.textTheme.bodyText2,
+          isAlwaysShown: true,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(
+                  bottom: pagesBottomMargin,
+                  left: pagesRightAndLeftMargin(_width, _mobileView),
+                  right: pagesRightAndLeftMargin(_width, _mobileView),
                 ),
-                RaisedButton(
-                  child: Text(
-                    'change state',
-                    style: theme.textTheme.bodyText1,
-                  ),
-                  onPressed: () => changeState(),
-                ),
-              ],
-            ),
+                child: BlocBuilder<InternetCubit, InternetState>(
+                    builder: (context, state) {
+                  if (state is InternetDisconnected) {
+                    return CustomDialog(
+                      title: "Disconnected",
+                      description:
+                          "You are disconnected from the server.\nPlease check your connection status.",
+                    );
+                  }
+                  return Column(
+                    children: [
+                      Text(
+                        'messages state: ' + _state.toString(),
+                        style: theme.textTheme.bodyText2,
+                      ),
+                      RaisedButton(
+                        child: Text(
+                          'change state',
+                          style: theme.textTheme.bodyText1,
+                        ),
+                        onPressed: () => changeState(),
+                      ),
+                    ],
+                  );
+                })),
           ),
         ),
-      ),
     );
   }
 }
