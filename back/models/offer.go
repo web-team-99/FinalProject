@@ -13,7 +13,7 @@ const (
 
 type Offer struct {
 	ID           bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
-	ProjectID    bson.ObjectId `json:"_projectid,omitempty" bson:"_projectid,omitempty"`
+	ProjectID    bson.ObjectId `json:"_projectid" bson:"_projectid"`
 	FreelancerID bson.ObjectId `json:"_freelancerid,omitempty" bson:"_freelancerid,omitempty"`
 	Price        int64         `json:"price" form:"price" binding:"required" bson:"price"`
 	Description  string        `json:"desc" form:"desc" bson:"desc"`

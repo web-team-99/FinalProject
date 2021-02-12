@@ -13,10 +13,7 @@ import (
 // IsLoggedIn middleware
 func IsLoggedIn(c *gin.Context) {
 	session := sessions.Default(c)
-	// fmt.Println(session)
-	// token := session.Get("token")
 	userid := session.Get("userid")
-	// fmt.Println(token)
 	fmt.Println(userid)
 	if userid == nil {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -25,7 +22,6 @@ func IsLoggedIn(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	// fmt.Println("oh no")
 	c.Set("userid", userid)
 }
 

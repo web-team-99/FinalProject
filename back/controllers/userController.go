@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"time"
 	"webprj/models"
 
@@ -37,29 +36,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// token, err := CreateToken(result.ID)
-	// if err != nil {
-	// 	c.JSON(http.StatusUnprocessableEntity, err.Error())
-	// 	return
-	// }
-
-	// // generate new token
-	// token, err := GenerateToken(result.ID)
-	// if err != nil {
-	// 	c.JSON(http.StatusUnprocessableEntity, err.Error())
-	// 	return
-	// }
-
-	// userid, err := ParseToken(token)
-	// if err != nil {
-	// 	c.Status(http.StatusUnauthorized)
-	// 	return
-	// }
-
 	session := sessions.Default(c)
 	session.Set("userid", result.ID.Hex())
 	err = session.Save()
-	fmt.Println(err)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err})
+		return
+	}
 
 	SendOK(c, &gin.H{"user": &result})
 }
