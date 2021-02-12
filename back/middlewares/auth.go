@@ -13,15 +13,20 @@ import (
 // IsLoggedIn middleware
 func IsLoggedIn(c *gin.Context) {
 	session := sessions.Default(c)
-	fmt.Println(session)
-	sessionID := session.Get("id")
-	fmt.Println(sessionID)
-	if sessionID == nil {
+	// fmt.Println(session)
+	// token := session.Get("token")
+	userid := session.Get("userid")
+	// fmt.Println(token)
+	fmt.Println(userid)
+	if userid == nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "unauthorized",
 		})
 		c.Abort()
+		return
 	}
+	// fmt.Println("oh no")
+	c.Set("userid", userid)
 }
 
 // IsEmailValid middleware

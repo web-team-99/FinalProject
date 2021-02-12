@@ -12,6 +12,11 @@ import (
 
 func CreateProject(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
+	autherid_str := c.MustGet("userid").(string)
+
+	fmt.Println(autherid_str)
+	autherid := bson.ObjectIdHex(autherid_str)
+	// fmt.Println(autherid2)
 
 	project := models.Project{}
 	err := c.Bind(&project)
@@ -27,7 +32,7 @@ func CreateProject(c *gin.Context) {
 	}
 
 	project.ID = bson.NewObjectId()
-	project.AuthorID = bson.NewObjectId() // to do
+	project.AuthorID = autherid
 	project.CreatedAt, project.UpdatedAt = time.Now(), time.Now()
 
 	err = db.C(models.ProjectC).Insert(project)

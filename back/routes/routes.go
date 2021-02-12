@@ -4,6 +4,7 @@ package routes
 
 import (
 	"fmt"
+	"os"
 	"webprj/middlewares"
 
 	"github.com/gin-contrib/sessions"
@@ -25,11 +26,12 @@ func InitializeRoutes(router *gin.Engine) {
 	session, err := mgo.Dial("localhost:27017/test")
 	if err != nil {
 		// handle err
+		fmt.Println(err)
 	}
 
-	c := session.DB("").C("Session")
+	c := session.DB(os.Getenv("MONGO_DB_NAME")).C("Session")
 	store := mongo.NewStore(c, 3600, true, []byte("secret"))
-	api.Use(sessions.Sessions("mysession", store))
+	api.Use(sessions.Sessions("session", store))
 
 	indexRoutes(api)
 
