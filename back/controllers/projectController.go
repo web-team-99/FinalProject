@@ -113,3 +113,42 @@ func AssignProject(c *gin.Context) {
 
 	SendOK(c, &gin.H{"message": "offer assigned"})
 }
+
+func GetAllProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+
+	projects := []models.Project{}
+	err := db.C(models.ProjectC).Find(nil).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllUnassignedProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+
+	projects := []models.Project{}
+	err := db.C(models.ProjectC).Find(bson.M{"assigned": false}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllAssignedProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+
+	projects := []models.Project{}
+	err := db.C(models.ProjectC).Find(bson.M{"assigned": true}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
