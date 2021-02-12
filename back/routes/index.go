@@ -12,5 +12,5 @@ func indexRoutes(router *gin.RouterGroup) {
 
 	path.POST("/login", middlewares.IsEmailValid, middlewares.IsPassValid, controllers.Login)
 	path.POST("/register", middlewares.IsEmailValid, middlewares.IsPassValid, controllers.Register)
-	path.GET("/jobs", test)
+	// path.GET("/jobs", test)
 }

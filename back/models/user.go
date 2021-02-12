@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	// CollectionArticle holds the name of the articles collection
+	// UserC holds the name of the users collection
 	UserC = "User"
 )
 

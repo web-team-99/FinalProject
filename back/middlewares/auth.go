@@ -2,15 +2,26 @@ package middlewares
 
 import (
 	"fmt"
+	"net/http"
 	"regexp"
 	"webprj/controllers"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
 // IsLoggedIn middleware
 func IsLoggedIn(c *gin.Context) {
-	fmt.Println(c.Request.Body)
+	session := sessions.Default(c)
+	fmt.Println(session)
+	sessionID := session.Get("id")
+	fmt.Println(sessionID)
+	if sessionID == nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "unauthorized",
+		})
+		c.Abort()
+	}
 }
 
 // IsEmailValid middleware

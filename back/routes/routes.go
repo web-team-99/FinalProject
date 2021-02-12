@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"webprj/middlewares"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/mongo"
 	"github.com/gin-gonic/gin"
+	"github.com/globalsign/mgo"
 )
 
 func test(c *gin.Context) {
@@ -19,9 +22,20 @@ func InitializeRoutes(router *gin.Engine) {
 
 	api.Use(middlewares.Connect)
 
+	session, err := mgo.Dial("localhost:27017/test")
+	if err != nil {
+		// handle err
+	}
+
+	c := session.DB("").C("Session")
+	store := mongo.NewStore(c, 3600, true, []byte("secret"))
+	api.Use(sessions.Sessions("mysession", store))
+
 	indexRoutes(api)
 
 	userRoutes(api)
+
+	projectRoutes(api)
 
 	// unauthorized := api.Group("/")
 	// unauthorized.Use(test)

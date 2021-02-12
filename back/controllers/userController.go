@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"fmt"
 	"time"
 	"webprj/models"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -17,7 +17,6 @@ func Login(c *gin.Context) {
 	user := models.User{}
 	err := c.Bind(&user)
 	if err != nil {
-		fmt.Println(err)
 		SendBadRequest(c, &gin.H{"message": "Invalid request body"})
 		return
 	}
@@ -36,6 +35,11 @@ func Login(c *gin.Context) {
 		SendBadRequest(c, &gin.H{"message": "password is wrong"})
 		return
 	}
+
+	session := sessions.Default(c)
+	session.Set("id", 12090292)
+	session.Set("email", "test@gmail.com")
+	session.Save()
 
 	SendOK(c, &gin.H{"user": &result})
 }
