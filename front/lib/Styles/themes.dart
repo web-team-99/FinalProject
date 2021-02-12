@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:test_url/Styles/textStyles.dart';
 
 ThemeData defaultTheme = ThemeData(
-  primaryColor: Color.fromRGBO(232, 93, 4, 1),
+  primaryColor: Color.fromRGBO(100, 93, 4, 1),
   backgroundColor: Color.fromRGBO(255, 235, 235, 1),
   // primarySwatch: Colors.pink,
   cardColor: Color.fromRGBO(141, 153, 174, 1),
