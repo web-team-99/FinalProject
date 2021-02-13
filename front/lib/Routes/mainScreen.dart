@@ -1,5 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:test_url/Cubits/InternetStateCubit.dart';
 import 'package:test_url/Enums/homeOptionsEnum.dart';
 import 'package:test_url/Enums/mainTabsEnum.dart';
 import 'package:test_url/Enums/moreOptionsEnum.dart';
@@ -21,23 +23,25 @@ import 'package:test_url/providers/MorePageProviders/manualProvider.dart';
 import 'package:test_url/providers/MorePageProviders/pricingProvider.dart';
 import 'package:test_url/providers/MorePageProviders/rulesProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreen extends StatefulWidget {
   final MainTab initialTab;
   final MoreOption moreOption;
   final HomeOption homeOption;
   final int id;
+  final Connectivity connectivity;
 
   MainScreen(
-      {@required this.initialTab, this.moreOption, this.homeOption, this.id});
+      {@required this.initialTab,
+      this.moreOption,
+      this.homeOption,
+      this.id,
+      @required this.connectivity});
 
   State<StatefulWidget> createState() {
     return _MainScreenState(
-      initialTab,
-      moreOption,
-      homeOption,
-      id,
-    );
+        initialTab, moreOption, homeOption, id, connectivity);
   }
 }
 
@@ -48,13 +52,10 @@ class _MainScreenState extends State<MainScreen> {
   final MoreOption _moreOption;
   final HomeOption _homeOption;
   final int _id;
+  final Connectivity connectivity;
 
-  _MainScreenState(
-    this._initialTab,
-    this._moreOption,
-    this._homeOption,
-    this._id,
-  );
+  _MainScreenState(this._initialTab, this._moreOption, this._homeOption,
+      this._id, this.connectivity);
 
   @override
   void initState() {
@@ -117,58 +118,65 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider.value(value: AboutUsProvider()),
-        ChangeNotifierProvider.value(value: ContactUsProvider()),
-        ChangeNotifierProvider.value(value: FaqProvider()),
-        ChangeNotifierProvider.value(value: ManualProvider()),
-        ChangeNotifierProvider.value(value: PricingProvider()),
-        ChangeNotifierProvider.value(value: RuleProvider()),
-        ChangeNotifierProvider.value(value: BlogProvider()),
-        ChangeNotifierProvider.value(value: BlogPostProvider()),
+        BlocProvider<InternetCubit>(
+          create: (context) => InternetCubit(connectivity: connectivity),
+        ),
       ],
-      child: MaterialApp(
-        theme: defaultTheme,
-        home: Scaffold(
-          body: PersistentTabView(
-            controller: _controller,
-            screens: _buildScreens(),
-            confineInSafeArea: true,
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: AboutUsProvider()),
+          ChangeNotifierProvider.value(value: ContactUsProvider()),
+          ChangeNotifierProvider.value(value: FaqProvider()),
+          ChangeNotifierProvider.value(value: ManualProvider()),
+          ChangeNotifierProvider.value(value: PricingProvider()),
+          ChangeNotifierProvider.value(value: RuleProvider()),
+          ChangeNotifierProvider.value(value: BlogProvider()),
+          ChangeNotifierProvider.value(value: BlogPostProvider()),
+        ],
+        child: MaterialApp(
+          theme: defaultTheme,
+          home: Scaffold(
+            body: PersistentTabView(
+              controller: _controller,
+              screens: _buildScreens(),
+              confineInSafeArea: true,
 
-            itemCount: 5,
-            backgroundColor: isOnIos
-                ? Color.fromRGBO(248, 248, 248, 1)
-                : Color.fromRGBO(43, 45, 66, 1),
-            handleAndroidBackButtonPress: true,
-            resizeToAvoidBottomInset: true,
-            stateManagement: true,
-            hideNavigationBarWhenKeyboardShows: true,
-            // hideNavigationBar: _hideNavBar,
-            decoration: NavBarDecoration(
-              colorBehindNavBar: Theme.of(context).backgroundColor,
-              boxShadow: isOnIos
-                  ? null
-                  : [
-                      BoxShadow(
-                        color: Color.fromRGBO(43, 45, 66, 1),
-                        offset: Offset(0.0, -2.0),
-                        blurRadius: 5.0,
-                      ),
-                    ],
+              itemCount: 5,
+              backgroundColor: isOnIos
+                  ? Color.fromRGBO(248, 248, 248, 1)
+                  : Color.fromRGBO(43, 45, 66, 1),
+              handleAndroidBackButtonPress: true,
+              resizeToAvoidBottomInset: true,
+              stateManagement: true,
+              hideNavigationBarWhenKeyboardShows: true,
+              // hideNavigationBar: _hideNavBar,
+              decoration: NavBarDecoration(
+                colorBehindNavBar: Theme.of(context).backgroundColor,
+                boxShadow: isOnIos
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Color.fromRGBO(43, 45, 66, 1),
+                          offset: Offset(0.0, -2.0),
+                          blurRadius: 5.0,
+                        ),
+                      ],
+              ),
+              popAllScreensOnTapOfSelectedTab: true,
+              itemAnimationProperties: ItemAnimationProperties(
+                duration: Duration(milliseconds: 400),
+                curve: Curves.ease,
+              ),
+              screenTransitionAnimation: ScreenTransitionAnimation(
+                animateTabTransition: true,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 400),
+              ),
+              items: _navBarsItems(),
+              navBarStyle: NavBarStyle.style14,
             ),
-            popAllScreensOnTapOfSelectedTab: true,
-            itemAnimationProperties: ItemAnimationProperties(
-              duration: Duration(milliseconds: 400),
-              curve: Curves.ease,
-            ),
-            screenTransitionAnimation: ScreenTransitionAnimation(
-              animateTabTransition: true,
-              curve: Curves.ease,
-              duration: Duration(milliseconds: 400),
-            ),
-            items: _navBarsItems(),
-            navBarStyle: NavBarStyle.style14,
           ),
         ),
       ),

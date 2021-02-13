@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:test_url/Components/ProfileRoute/loginHeader.dart';
+import 'package:test_url/Cubits/InternetStateCubit.dart';
+import 'package:test_url/Pages/CustomDialog.dart';
 import 'package:test_url/Pages/Profile/editProfile.dart';
 
 import 'package:test_url/Setting/numbers.dart';
@@ -19,10 +22,13 @@ class ProfileRoute extends StatelessWidget {
       new TextEditingController();
   final _scrollController = ScrollController();
 
+  double _width;
+  bool _mobileView;
+
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    bool _mobileView = _width < mobileViewMaxWidth ? true : false;
+    _width = MediaQuery.of(context).size.width;
+    _mobileView = _width < mobileViewMaxWidth ? true : false;
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
@@ -39,7 +45,22 @@ class ProfileRoute extends StatelessWidget {
               textTheme: theme.textTheme,
             ),
       backgroundColor: theme.backgroundColor,
-      body: Scrollbar(
+      body: createBody(context, theme),
+    );
+  }
+
+  Widget createBody(BuildContext context, ThemeData theme) {
+    return BlocBuilder<InternetCubit, InternetState>(builder: (context, state) {
+      if (state is InternetDisconnected) {
+        return Center(
+          child: CustomDialog(
+            title: "Disconnected",
+            description:
+                "You are disconnected from the server.\nPlease check your connection status.",
+          ),
+        );
+      }
+      return Scrollbar(
         controller: _scrollController,
         isAlwaysShown: true,
         child: SingleChildScrollView(
@@ -140,7 +161,7 @@ class ProfileRoute extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
