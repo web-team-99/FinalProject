@@ -27,7 +27,7 @@ func projectRoutes(router *gin.RouterGroup) {
 
 	offer := path.Group("/offer")
 
-	offer.GET("/p", middlewares.IsLoggedIn, controllers.GetPostOffers)
+	offer.GET("/p", middlewares.IsLoggedIn, controllers.GetProjectOffers)
 	offer.GET("/u", middlewares.IsLoggedIn, controllers.GetUserOffers)
 	offer.GET("/f", middlewares.IsLoggedIn, controllers.GetFreelancerOffers)
 

@@ -10,6 +10,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// CreateProject , form-data , auth
 func CreateProject(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	autherIDstr := c.MustGet("userid").(string)
@@ -44,6 +45,7 @@ func CreateProject(c *gin.Context) {
 	SendOK(c, &gin.H{"project": &project})
 }
 
+// CreateOffer , form-data , auth
 func CreateOffer(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 
@@ -90,6 +92,7 @@ func CreateOffer(c *gin.Context) {
 	SendOK(c, &gin.H{"offer": &offer})
 }
 
+// AssignProject , quary: offerid , auth
 func AssignProject(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 
@@ -122,6 +125,7 @@ func AssignProject(c *gin.Context) {
 	SendOK(c, &gin.H{"message": "offer assigned"})
 }
 
+// GetAllProjects ,  ,
 func GetAllProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 
@@ -135,6 +139,7 @@ func GetAllProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
+// GetAllUnassignedProjects , ,
 func GetAllUnassignedProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 
@@ -148,6 +153,7 @@ func GetAllUnassignedProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
+// GetAllAssignedProjects , ,
 func GetAllAssignedProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 
@@ -161,6 +167,7 @@ func GetAllAssignedProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
+// GetAllUserProjects , quary: userid ,
 func GetAllUserProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	userid, err := getIDfromQuery(c, "userid")
@@ -180,6 +187,7 @@ func GetAllUserProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
+// GetAllUserUnassignedProjects , quary: userid ,
 func GetAllUserUnassignedProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	userid, err := getIDfromQuery(c, "userid")
@@ -199,6 +207,7 @@ func GetAllUserUnassignedProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
+// GetAllUserAssignedProjects , quary: userid ,
 func GetAllUserAssignedProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	userid, err := getIDfromQuery(c, "userid")
@@ -218,17 +227,21 @@ func GetAllUserAssignedProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
+// GetAllUserAcceptedProjects , , auth
 func GetAllUserAcceptedProjects(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
-	userid, err := getIDfromQuery(c, "userid")
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": err.Error()})
-		return
-	}
-	fmt.Println(userid)
+
+	userid := getIDfromContex(c, "userid")
+
+	// userid, err := getIDfromQuery(c, "userid")
+	// if err != nil {
+	// 	SendBadRequest(c, &gin.H{"message": err.Error()})
+	// 	return
+	// }
+	// fmt.Println(userid)
 
 	projects := []models.Project{}
-	err = db.C(models.ProjectC).Find(bson.M{"_freelancerid": userid, "assigned": true}).Sort("-created_at").All(&projects)
+	err := db.C(models.ProjectC).Find(bson.M{"_freelancerid": userid, "assigned": true}).Sort("-created_at").All(&projects)
 	if err != nil {
 		SendBadRequest(c, &gin.H{"message": "empty"})
 		return
@@ -237,26 +250,31 @@ func GetAllUserAcceptedProjects(c *gin.Context) {
 	SendOK(c, &gin.H{"projects": &projects})
 }
 
-func GetAllProjectOffers(c *gin.Context) {
-	db := c.MustGet("db").(*mgo.Database)
-	userid, err := getIDfromQuery(c, "userid")
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": err.Error()})
-		return
-	}
-	fmt.Println(userid)
+// // GetAllProjectOffers , , auth
+// func GetAllProjectOffers(c *gin.Context) {
+// 	db := c.MustGet("db").(*mgo.Database)
 
-	projects := []models.Project{}
-	err = db.C(models.ProjectC).Find(bson.M{"_autherid": userid, "assigned": true}).Sort("-created_at").All(&projects)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "empty"})
-		return
-	}
+// 	userid := getIDfromContex(c, "userid")
 
-	SendOK(c, &gin.H{"projects": &projects})
-}
+// 	// userid, err := getIDfromQuery(c, "userid")
+// 	// if err != nil {
+// 	// 	SendBadRequest(c, &gin.H{"message": err.Error()})
+// 	// 	return
+// 	// }
+// 	// fmt.Println(userid)
 
-func GetPostOffers(c *gin.Context) {
+// 	projects := []models.Project{}
+// 	err := db.C(models.ProjectC).Find(bson.M{"_autherid": userid, "assigned": true}).Sort("-created_at").All(&projects)
+// 	if err != nil {
+// 		SendBadRequest(c, &gin.H{"message": "empty"})
+// 		return
+// 	}
+
+// 	SendOK(c, &gin.H{"projects": &projects})
+// }
+
+// GetProjectOffers , quary: projectid , auth
+func GetProjectOffers(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	userid := getIDfromContex(c, "userid")
 	projectid, err := getIDfromQuery(c, "projectid")
@@ -276,6 +294,7 @@ func GetPostOffers(c *gin.Context) {
 	SendOK(c, &gin.H{"offers": &offers})
 }
 
+// GetUserOffers , , auth
 func GetUserOffers(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	userid := getIDfromContex(c, "userid")
@@ -290,6 +309,7 @@ func GetUserOffers(c *gin.Context) {
 	SendOK(c, &gin.H{"offers": &offers})
 }
 
+// GetFreelancerOffers , , auth
 func GetFreelancerOffers(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	userid := getIDfromContex(c, "userid")
