@@ -68,7 +68,15 @@ func CreateOffer(c *gin.Context) {
 		return
 	}
 
+	project := models.Project{}
+	err = db.C(models.ProjectC).FindId(projectid).One(&project)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "project not found"})
+		return
+	}
+
 	offer.ID = bson.NewObjectId()
+	offer.AuthorID = project.AuthorID
 	offer.ProjectID = projectid
 	offer.FreelancerID = freelancerid
 	offer.CreatedAt, offer.UpdatedAt = time.Now(), time.Now()
@@ -151,4 +159,147 @@ func GetAllAssignedProjects(c *gin.Context) {
 	}
 
 	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllUserProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid, err := getIDfromQuery(c, "userid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(userid)
+
+	projects := []models.Project{}
+	err = db.C(models.ProjectC).Find(bson.M{"_autherid": userid}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllUserUnassignedProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid, err := getIDfromQuery(c, "userid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(userid)
+
+	projects := []models.Project{}
+	err = db.C(models.ProjectC).Find(bson.M{"_autherid": userid, "assigned": false}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllUserAssignedProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid, err := getIDfromQuery(c, "userid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(userid)
+
+	projects := []models.Project{}
+	err = db.C(models.ProjectC).Find(bson.M{"_autherid": userid, "assigned": true}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllUserAcceptedProjects(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid, err := getIDfromQuery(c, "userid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(userid)
+
+	projects := []models.Project{}
+	err = db.C(models.ProjectC).Find(bson.M{"_freelancerid": userid, "assigned": true}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetAllProjectOffers(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid, err := getIDfromQuery(c, "userid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(userid)
+
+	projects := []models.Project{}
+	err = db.C(models.ProjectC).Find(bson.M{"_autherid": userid, "assigned": true}).Sort("-created_at").All(&projects)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetPostOffers(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid := getIDfromContex(c, "userid")
+	projectid, err := getIDfromQuery(c, "projectid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(projectid)
+
+	offers := []models.Offer{}
+	err = db.C(models.OfferC).Find(bson.M{"_autherid": userid, "_projectid": projectid}).Sort("-created_at").All(&offers)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"offers": &offers})
+}
+
+func GetUserOffers(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid := getIDfromContex(c, "userid")
+
+	offers := []models.Offer{}
+	err := db.C(models.OfferC).Find(bson.M{"_autherid": userid}).Sort("-created_at").All(&offers)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"offers": &offers})
+}
+
+func GetFreelancerOffers(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	userid := getIDfromContex(c, "userid")
+
+	offers := []models.Offer{}
+	err := db.C(models.OfferC).Find(bson.M{"_freelancerid": userid}).Sort("-created_at").All(&offers)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"offers": &offers})
 }
