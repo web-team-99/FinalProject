@@ -17,4 +17,18 @@ func projectRoutes(router *gin.RouterGroup) {
 	path.GET("/all", controllers.GetAllProjects)
 	path.GET("/unassigned", controllers.GetAllUnassignedProjects)
 	path.GET("/assigned", controllers.GetAllAssignedProjects)
+
+	user := path.Group("/user")
+
+	user.GET("/all", controllers.GetAllUserProjects)
+	user.GET("/unassigned", controllers.GetAllUserUnassignedProjects)
+	user.GET("/assigned", controllers.GetAllUserAssignedProjects)
+	user.GET("/accepted", controllers.GetAllUserAcceptedProjects)
+
+	offer := path.Group("/offer")
+
+	offer.GET("/p", middlewares.IsLoggedIn, controllers.GetProjectOffers)
+	offer.GET("/u", middlewares.IsLoggedIn, controllers.GetUserOffers)
+	offer.GET("/f", middlewares.IsLoggedIn, controllers.GetFreelancerOffers)
+
 }
