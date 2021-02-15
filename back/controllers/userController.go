@@ -44,12 +44,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	result.Password = ""
+
 	SendOK(c, &gin.H{"user": &result})
 }
 
 // Register  controller
 func Register(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
+
+	imgPath := saveImage(c, models.UserPath)
 
 	user := models.User{}
 	err := c.Bind(&user)
@@ -59,6 +63,7 @@ func Register(c *gin.Context) {
 	}
 	user.ID = bson.NewObjectId()
 	user.CreatedAt, user.UpdatedAt = time.Now(), time.Now()
+	user.Image = imgPath
 
 	if !isEmailNew(db, user.Email) {
 		SendBadRequest(c, &gin.H{"message": "email exist"})
@@ -73,6 +78,17 @@ func Register(c *gin.Context) {
 		SendBadRequest(c, &gin.H{"message": "Error in the user insertion"})
 		return
 	}
+
+	session := sessions.Default(c)
+	session.Set("userid", user.ID.Hex())
+	err = session.Save()
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err})
+		return
+	}
+
+	user.Password = ""
+
 	SendOK(c, &gin.H{"user": &user})
 }
 

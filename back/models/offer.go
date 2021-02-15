@@ -18,7 +18,7 @@ type Offer struct {
 	FreelancerID bson.ObjectId `json:"_freelancerid,omitempty" bson:"_freelancerid,omitempty"`
 	Price        uint32        `json:"price" form:"price" binding:"required" bson:"price"`
 	Description  string        `json:"desc" form:"desc" bson:"desc"`
-	Priod        uint8         `json:"priod" bson:"priod"`
+	Priod        uint16        `json:"priod" form:"priod" binding:"required" bson:"priod"`
 	CreatedAt    time.Time     `json:"created_at" bson:"created_at"`
 	UpdatedAt    time.Time     `json:"updated_at" bson:"updated_at"`
 }

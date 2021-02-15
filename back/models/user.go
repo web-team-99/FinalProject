@@ -8,7 +8,8 @@ import (
 
 const (
 	// UserC holds the name of the users collection
-	UserC = "User"
+	UserC    = "User"
+	UserPath = "/usr/"
 )
 
 type User struct {
@@ -18,6 +19,7 @@ type User struct {
 	Password  string        `json:"password" form:"password" binding:"required" bson:"password"`
 	Email     string        `json:"email" form:"email" binding:"required" bson:"email"`
 	Phone     string        `json:"phone,omitempty" form:"phone" bson:"phone,omitempty"`
-	CreatedAt time.Time     `json:"created_at" bson:"created_at"`
-	UpdatedAt time.Time     `json:"updated_at" bson:"updated_at"`
+	Image     string
+	CreatedAt time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`
 }
