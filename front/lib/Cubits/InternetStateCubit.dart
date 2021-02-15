@@ -16,22 +16,18 @@ class InternetCubit extends Cubit<InternetState> {
     return connectivityStreamSub =
         connectivity.onConnectivityChanged.listen((event) {
       if (event == ConnectivityResult.none) {
-        print("no Internet State!!!!!!!");
         emitInternetDisconnected();
       } else {
-        print('internet access state@@@@@');
         emitInternetConnected();
       }
     });
   }
 
   void emitInternetConnected() {
-    print("Emitting internet Connected.");
     emit(InternetConnected());
   }
 
   void emitInternetDisconnected() {
-    print("emitting internet disconnected.");
     emit(InternetDisconnected());
   }
 
@@ -41,11 +37,6 @@ class InternetCubit extends Cubit<InternetState> {
     return super.close();
   }
 
-  @override
-  void onChange(Change<InternetState> change) {
-    print("ON CHANGE CALLED :::::::::::::::: $change");
-    super.onChange(change);
-  }
 }
 
 class InternetState {}

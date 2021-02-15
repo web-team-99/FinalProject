@@ -4,7 +4,7 @@ import 'package:test_url/Setting/platform.dart';
 
 //navigationBar tabs
 IconData homeIcon = isOnIos ? CupertinoIcons.house : Icons.home;
-IconData messagesIcon = isOnIos ? CupertinoIcons.envelope : Icons.message;
+IconData messagesIcon = isOnIos ? CupertinoIcons.add : Icons.post_add;
 IconData searchIcon = isOnIos ? CupertinoIcons.search : Icons.search;
 IconData profileIcon = isOnIos ? CupertinoIcons.profile_circled : Icons.person;
 IconData moreIcon = isOnIos ? CupertinoIcons.ellipsis : Icons.more_horiz;
