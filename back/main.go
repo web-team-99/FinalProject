@@ -14,6 +14,9 @@ func main() {
 
 	router := gin.Default()
 
+	router.Static("/static", "./assets")
+	router.StaticFile("/favicon.ico", "./assets/favicon/favicon.ico")
+
 	routes.InitializeRoutes(router)
 
 	err := config.InitMongoDB2()
