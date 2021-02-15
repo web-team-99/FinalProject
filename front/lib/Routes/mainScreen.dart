@@ -1,19 +1,21 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:test_url/Cubits/AuthBloc.dart';
 import 'package:test_url/Cubits/InternetStateCubit.dart';
 import 'package:test_url/Enums/homeOptionsEnum.dart';
 import 'package:test_url/Enums/mainTabsEnum.dart';
 import 'package:test_url/Enums/moreOptionsEnum.dart';
 import 'package:test_url/Functions/mainFunctions.dart';
 import 'package:test_url/Routes/homeRoute.dart';
-import 'package:test_url/Routes/messagesRoute.dart';
 import 'package:test_url/Routes/moreRoute.dart';
 import 'package:test_url/Routes/profileRoute.dart';
+import 'package:test_url/Routes/projectServiceRoute.dart';
 import 'package:test_url/Routes/searchRoute.dart';
 import 'package:test_url/Setting/platform.dart';
 import 'package:test_url/Styles/icons.dart';
 import 'package:test_url/Styles/themes.dart';
+import 'package:test_url/models/user.dart';
 import 'package:test_url/providers/MorePageProviders/aboutUsProvider.dart';
 import 'package:test_url/providers/MorePageProviders/blogPostProvider.dart';
 import 'package:test_url/providers/MorePageProviders/blogProvider.dart';
@@ -68,8 +70,8 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _buildScreens() {
     return [
       HomeRoute(),
-      MessagesRoute(),
       SearchRoute(),
+      ProjectServiceRoute(),
       ProfileRoute(),
       MoreRoute(_moreOption, _id),
     ];
@@ -86,15 +88,15 @@ class _MainScreenState extends State<MainScreen> {
         // titleStyle: TextStyle(fontFamily: mainFontFamily),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(messagesIcon),
-        // title: (messagesPageTitle),
+        icon: Icon(searchIcon),
+        // title: (searchPageTitle),
         activeColor: isOnIos ? theme.primaryColor : theme.backgroundColor,
         inactiveColor: Colors.grey,
         // titleStyle: TextStyle(fontFamily: mainFontFamily),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(searchIcon),
-        // title: (searchPageTitle),
+        icon: Icon(messagesIcon),
+        // title: (messagesPageTitle),
         activeColor: isOnIos ? theme.primaryColor : theme.backgroundColor,
         inactiveColor: Colors.grey,
         // titleStyle: TextStyle(fontFamily: mainFontFamily),
@@ -123,6 +125,11 @@ class _MainScreenState extends State<MainScreen> {
         BlocProvider<InternetCubit>(
           create: (context) => InternetCubit(connectivity: connectivity),
         ),
+        BlocProvider<AuthBloc>(
+          create: (context) {
+            return AuthBloc("Initial State");
+          },
+        )
       ],
       child: MultiProvider(
         providers: [

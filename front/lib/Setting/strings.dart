@@ -1,19 +1,19 @@
 //pages title
 String homePageTitle = 'Freelancer';
-String messagesPageTitle = 'messages';
-String searchPageTitle = 'search';
-String profilePageTitle = 'profile';
-String morePageTitle = 'more';
-String aboutUsPageTitle = 'about us';
-String contactUsPageTitle = 'contact us';
-String rulesPageTitle = 'rules';
-String manualPageTitle = 'manual';
-String pricingsPageTitle = 'prices';
+String projectsAndServicesPageTitle = 'Projects And Services';
+String searchPageTitle = 'Search';
+String profilePageTitle = 'Profile';
+String morePageTitle = 'More';
+String aboutUsPageTitle = 'About us';
+String contactUsPageTitle = 'Contact us';
+String rulesPageTitle = 'Rules';
+String manualPageTitle = 'Manual';
+String pricingsPageTitle = 'Prices';
 String faqPageTitle = 'Frequently Asked Questions';
-String blogPageTitle = 'blog';
-String softwareTeamPageTitle = 'developers';
+String blogPageTitle = 'Blog';
+String softwareTeamPageTitle = 'Developers';
 String templatePageTitle = '//template//';
-String blogPostPageTitle = 'post';
+String blogPostPageTitle = 'Post';
 
 //home strings
 String homePageAppBarInstallApp = 'Install app';

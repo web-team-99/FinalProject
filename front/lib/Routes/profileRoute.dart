@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 import 'package:test_url/Components/ProfileRoute/loginHeader.dart';
+import 'package:test_url/Cubits/AuthBloc.dart';
 import 'package:test_url/Cubits/InternetStateCubit.dart';
 import 'package:test_url/Pages/CustomDialog.dart';
 import 'package:test_url/Pages/Profile/editProfile.dart';
@@ -10,20 +12,34 @@ import 'package:test_url/Pages/Profile/editProfile.dart';
 import 'package:test_url/Setting/numbers.dart';
 import 'package:test_url/Setting/platform.dart';
 import 'package:test_url/Setting/strings.dart';
+import 'package:test_url/models/user.dart';
 
 import '../Styles/animations.dart';
 
-class ProfileRoute extends StatelessWidget {
+class ProfileRoute extends StatefulWidget {
+  @override
+  _ProfileRouteState createState() => _ProfileRouteState();
+}
+
+class _ProfileRouteState extends State<ProfileRoute> {
   TextEditingController signinEmailController = new TextEditingController();
   TextEditingController signinPasswordController = new TextEditingController();
   TextEditingController signupEmailController = new TextEditingController();
   TextEditingController signupPasswordController = new TextEditingController();
   TextEditingController signupRepeatPasswordController =
       new TextEditingController();
+
   final _scrollController = ScrollController();
 
   double _width;
   bool _mobileView;
+  AuthBloc authBloc;
+
+  @override
+  void dispose() {
+    authBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +66,8 @@ class ProfileRoute extends StatelessWidget {
   }
 
   Widget createBody(BuildContext context, ThemeData theme) {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+
     return BlocBuilder<InternetCubit, InternetState>(builder: (context, state) {
       if (state is InternetDisconnected) {
         return Center(
@@ -102,12 +120,13 @@ class ProfileRoute extends StatelessWidget {
                     style: theme.textTheme.bodyText1,
                   ),
                   onPressed: () => {
-                    pushNewScreenWithRouteSettings(
-                      context,
-                      settings: null,
-                      screen: EditProfile(),
-                      pageTransitionAnimation: changePageAnimation,
-                    )
+                    // pushNewScreenWithRouteSettings(
+                    //   context,
+                    //   settings: null,
+                    //   screen: EditProfile(),
+                    //   pageTransitionAnimation: changePageAnimation,
+                    // )
+                    authBloc.add(AuthState(user: User(), event: AuthEvent.login))
                   },
                 ),
                 LoginHeader('sign up'),
@@ -149,12 +168,13 @@ class ProfileRoute extends StatelessWidget {
                     style: theme.textTheme.bodyText1,
                   ),
                   onPressed: () => {
-                    pushNewScreenWithRouteSettings(
-                      context,
-                      settings: null,
-                      screen: EditProfile(),
-                      pageTransitionAnimation: changePageAnimation,
-                    )
+                    // pushNewScreenWithRouteSettings(
+                    //   context,
+                    //   settings: null,
+                    //   screen: EditProfile(),
+                    //   pageTransitionAnimation: changePageAnimation,
+                    // )
+                    authBloc.add(AuthState(user: User(), event: AuthEvent.signup))
                   },
                 ),
               ],

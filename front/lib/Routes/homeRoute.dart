@@ -15,17 +15,25 @@ class _HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
 
   TabController _tabController;
   int _tabIndex = 0;
+  Listener tabListener;
 
   @override
   void initState() {
     _tabController =
         TabController(initialIndex: _tabIndex, length: 2, vsync: this);
-    _tabController.addListener(() {
-      setState(() {
-        _tabIndex = _tabController.index;
-      });
-    });
+    // _tabController.addListener(() {
+    //   setState(() {
+    //     _tabIndex = _tabController.index;
+    //   });
+    // });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -182,40 +190,31 @@ class _HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
-        backgroundColor: _tabIndex == 0
-            ? theme.appBarTheme.backgroundColor
-            : theme.primaryColor,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         title: Align(
           alignment: Alignment.center,
           child: Text(
             "Freelance",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 28.0,
+            ),
           ),
         ),
         bottom: TabBar(
           controller: _tabController,
           indicatorSize: TabBarIndicatorSize.tab,
           unselectedLabelColor: Colors.white,
-          labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          labelColor: _tabIndex == 0
-              ? theme.appBarTheme.backgroundColor
-              : theme.primaryColor,
+          labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          labelColor: theme.appBarTheme.backgroundColor,
           indicator: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  offset: Offset(0.0, 1.0),
-                ),
-                BoxShadow(
-                    color: Colors.white,
-                    spreadRadius: -1.0,
-                    blurRadius: 1.0,
-                    offset: Offset(0.0, 2.8)),
-              ]),
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
           onTap: (index) {
             setState(() {
               _tabIndex = index;
@@ -239,17 +238,20 @@ class _HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
     return BlocBuilder<InternetCubit, InternetState>(
       builder: (context, state) {
         if (state is InternetDisconnected) {
-          return Center(
-            child: CustomDialog(
-              title: "Disconnected",
-              description:
-                  "You are disconnected from the server.\nPlease check your connection status.",
+          return SingleChildScrollView(
+            child: Center(
+              child: CustomDialog(
+                title: "Disconnected",
+                description:
+                    "You are disconnected from the server.\nPlease check your connection status.",
+              ),
             ),
           );
         }
-        return TabBarView(
-            controller: _tabController,
-            children: [createProjectsTab(context, theme), createServicesTab(context, theme),]);
+        return TabBarView(controller: _tabController, children: [
+          createProjectsTab(context, theme),
+          createServicesTab(context, theme),
+        ]);
       },
     );
   }
@@ -300,7 +302,6 @@ class _HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
                 margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                 enabled: true,
                 onTap: () {},
-                
               );
             },
           ),
@@ -308,5 +309,4 @@ class _HomeRouteState extends State<HomeRoute> with TickerProviderStateMixin {
       ],
     );
   }
-
 }
