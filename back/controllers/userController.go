@@ -128,6 +128,7 @@ func UpdateUserInfo(c *gin.Context) {
 		return
 	}
 
+	user.Password = old.Password
 	user.CreatedAt = old.CreatedAt
 
 	err = db.C(models.UserC).UpdateId(userid, user)
