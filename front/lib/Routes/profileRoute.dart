@@ -78,110 +78,127 @@ class _ProfileRouteState extends State<ProfileRoute> {
           ),
         );
       }
-      return Scrollbar(
+      return signupNLoginContent(context, theme);
+      // return BlocBuilder(
+      //   builder: (context, state) {
+      //     switch(state){
+
+      //     }
+      //   },
+      // );
+    });
+  }
+
+  Widget signupNLoginContent(BuildContext context, ThemeData theme) {
+    return Scrollbar(
+      controller: _scrollController,
+      isAlwaysShown: true,
+      child: SingleChildScrollView(
         controller: _scrollController,
-        isAlwaysShown: true,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(
-              bottom: pagesBottomMargin,
-              left: pagesRightAndLeftMargin(_width, _mobileView),
-              right: pagesRightAndLeftMargin(_width, _mobileView),
-            ),
-            child: Column(
-              children: [
-                LoginHeader('sign in'),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: signinEmailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
+        child: Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(
+            bottom: pagesBottomMargin,
+            left: pagesRightAndLeftMargin(_width, _mobileView),
+            right: pagesRightAndLeftMargin(_width, _mobileView),
+          ),
+          child: Column(
+            children: [
+              LoginHeader('sign in'),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: signinEmailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: signinPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: signinPasswordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                RaisedButton(
-                  child: Text(
-                    'sign in',
-                    style: theme.textTheme.bodyText1,
-                  ),
-                  onPressed: () => {
-                    // pushNewScreenWithRouteSettings(
-                    //   context,
-                    //   settings: null,
-                    //   screen: EditProfile(),
-                    //   pageTransitionAnimation: changePageAnimation,
-                    // )
-                    authBloc.add(AuthState(user: User(), event: AuthEvent.login))
-                  },
+              ),
+              RaisedButton(
+                child: Text(
+                  'sign in',
+                  style: theme.textTheme.bodyText1,
                 ),
-                LoginHeader('sign up'),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: signupEmailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: signupPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
+                onPressed: () => {
+                  // pushNewScreenWithRouteSettings(
+                  //   context,
+                  //   settings: null,
+                  //   screen: EditProfile(),
+                  //   pageTransitionAnimation: changePageAnimation,
+                  // )
+                  authBloc.add(Signin(new User()))
+                },
+              ),
+              LoginHeader('sign up'),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: signupEmailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: signupRepeatPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Repeat Password',
-                      border: OutlineInputBorder(),
-                    ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: signupPasswordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                RaisedButton(
-                  child: Text(
-                    'sign up',
-                    style: theme.textTheme.bodyText1,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: signupRepeatPasswordController,
+                  decoration: InputDecoration(
+                    labelText: 'Repeat Password',
+                    border: OutlineInputBorder(),
                   ),
-                  onPressed: () => {
-                    // pushNewScreenWithRouteSettings(
-                    //   context,
-                    //   settings: null,
-                    //   screen: EditProfile(),
-                    //   pageTransitionAnimation: changePageAnimation,
-                    // )
-                    authBloc.add(AuthState(user: User(), event: AuthEvent.signup))
-                  },
                 ),
-              ],
-            ),
+              ),
+              RaisedButton(
+                child: Text(
+                  'sign up',
+                  style: theme.textTheme.bodyText1,
+                ),
+                onPressed: () => {
+                  // pushNewScreenWithRouteSettings(
+                  //   context,
+                  //   settings: null,
+                  //   screen: EditProfile(),
+                  //   pageTransitionAnimation: changePageAnimation,
+                  // )
+                  authBloc.add(SignUp(new User()))
+                },
+              ),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  print(state.currentEvent);
+                  return Text(state.toString());
+                },
+              )
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
