@@ -10,6 +10,9 @@ const (
 	// ProjectC holds the name of the projects collection
 	ProjectC    = "Project"
 	ProjectPath = "/prj/"
+	State0      = "unassigned"
+	State1      = "assigned"
+	State2      = "done"
 )
 
 type Project struct {
@@ -20,8 +23,9 @@ type Project struct {
 	ShortDescription string        `json:"sdesc" form:"sdesc" binding:"required" bson:"sdesc"`
 	Description      string        `json:"desc" form:"desc" bson:"desc"`
 	Price            uint32        `json:"price" form:"price" bson:"price"`
-	Assigned         bool          `json:"assigned" form:"assigned" bson:"assigned"`
+	Assigned         bool          //`json:"assigned" form:"assigned" bson:"assigned"`
 	Image            string        //`json:"image,omitempty" form:"image,omitempty" bson:"image,omitempty"`
-	CreatedAt        time.Time     `json:"created_at" bson:"created_at"`
-	UpdatedAt        time.Time     `json:"updated_at" bson:"updated_at"`
+	State            string
+	CreatedAt        time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at" bson:"updated_at"`
 }

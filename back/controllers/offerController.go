@@ -84,7 +84,41 @@ func AssignProject(c *gin.Context) {
 	}
 
 	project.Assigned = true
-	project.Price = offer.Price
+	project.State = models.State1
+	// project.Price = offer.Price
+	project.FreelancerID = offer.FreelancerID
+	db.C(models.ProjectC).UpdateId(project.ID, &project)
+
+	SendOK(c, &gin.H{"message": "offer assigned"})
+}
+
+func DoneProject(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+
+	offerid, err := getIDfromQuery(c, "offerid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(offerid)
+
+	offer := models.Offer{}
+	err = db.C(models.OfferC).FindId(offerid).One(&offer)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "offer not found"})
+		return
+	}
+
+	project := models.Project{}
+	err = db.C(models.ProjectC).FindId(offer.ProjectID).One(&project)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "project not found"})
+		return
+	}
+
+	project.Assigned = true
+	project.State = models.State2
+	// project.Price = offer.Price
 	project.FreelancerID = offer.FreelancerID
 	db.C(models.ProjectC).UpdateId(project.ID, &project)
 

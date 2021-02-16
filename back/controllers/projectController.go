@@ -36,6 +36,7 @@ func CreateProject(c *gin.Context) {
 	project.AuthorID = autherid
 	project.CreatedAt, project.UpdatedAt = time.Now(), time.Now()
 	project.Image = imgPath
+	project.State = models.State0
 
 	err = db.C(models.ProjectC).Insert(project)
 	if err != nil {
@@ -170,6 +171,25 @@ func GetAllUserAcceptedProjects(c *gin.Context) {
 	}
 
 	SendOK(c, &gin.H{"projects": &projects})
+}
+
+func GetProject(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+	projectid, err := getIDfromQuery(c, "projectid")
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": err.Error()})
+		return
+	}
+	fmt.Println(projectid)
+
+	project := models.Project{}
+	err = db.C(models.ProjectC).FindId(projectid).One(&project)
+	if err != nil {
+		SendBadRequest(c, &gin.H{"message": "project not found"})
+		return
+	}
+
+	SendOK(c, &gin.H{"project": &project})
 }
 
 // // GetAllProjectOffers , , auth

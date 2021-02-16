@@ -13,10 +13,12 @@ func projectRoutes(router *gin.RouterGroup) {
 	path.POST("/new", middlewares.IsLoggedIn, controllers.CreateProject)
 	path.POST("/offer", middlewares.IsLoggedIn, controllers.CreateOffer)
 	path.GET("/assign", middlewares.IsLoggedIn, controllers.AssignProject)
+	path.GET("/do", middlewares.IsLoggedIn, controllers.DoneProject)
 
 	path.GET("/all", controllers.GetAllProjects)
 	path.GET("/unassigned", controllers.GetAllUnassignedProjects)
 	path.GET("/assigned", controllers.GetAllAssignedProjects)
+	path.GET("/", controllers.GetProject)
 
 	user := path.Group("/user")
 
@@ -30,5 +32,11 @@ func projectRoutes(router *gin.RouterGroup) {
 	offer.GET("/p", middlewares.IsLoggedIn, controllers.GetProjectOffers)
 	offer.GET("/u", middlewares.IsLoggedIn, controllers.GetUserOffers)
 	offer.GET("/f", middlewares.IsLoggedIn, controllers.GetFreelancerOffers)
+
+	comment := path.Group("/comment")
+
+	comment.POST("/", middlewares.IsLoggedIn, controllers.CreateComment)
+	comment.GET("/p", controllers.GetProjectComments)
+	comment.DELETE("/", middlewares.IsLoggedIn, controllers.DeleteProjectComment)
 
 }

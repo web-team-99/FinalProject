@@ -16,7 +16,7 @@ type User struct {
 	ID        bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
 	Name      string        `json:"name,omitempty" form:"name" bson:"name,omitempty"`
 	LastName  string        `json:"lname,omitempty" form:"lname" bson:"lname,omitempty"`
-	Password  string        `json:"password" form:"password" binding:"required" bson:"password"`
+	Password  string        `json:"password" form:"password" bson:"password"`
 	Email     string        `json:"email" form:"email" binding:"required" bson:"email"`
 	Phone     string        `json:"phone,omitempty" form:"phone" bson:"phone,omitempty"`
 	Image     string
