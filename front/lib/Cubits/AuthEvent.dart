@@ -2,7 +2,8 @@ part of 'AuthBloc.dart';
 
 abstract class AuthEvent {
   User user;
-  AuthEvent(this.user);
+  String errorText;
+  AuthEvent(this.user, {this.errorText});
 }
 
 class LoggedIn extends AuthEvent {
@@ -30,5 +31,5 @@ class Signin extends AuthEvent {
 }
 
 class Failure extends AuthEvent {
-  Failure(User user) : super(user);
+  Failure(User user, String errorText) : super(user, errorText: errorText);
 }

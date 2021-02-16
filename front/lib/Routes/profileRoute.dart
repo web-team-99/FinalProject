@@ -179,20 +179,29 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   'sign up',
                   style: theme.textTheme.bodyText1,
                 ),
-                onPressed: () => {
-                  // pushNewScreenWithRouteSettings(
-                  //   context,
-                  //   settings: null,
-                  //   screen: EditProfile(),
-                  //   pageTransitionAnimation: changePageAnimation,
-                  // )
-                  authBloc.add(SignUp(new User()))
-                },
+                onPressed: signUpPressed,
               ),
-              BlocBuilder<AuthBloc, AuthState>(
+              BlocConsumer<AuthBloc, AuthState>(
                 builder: (context, state) {
-                  print(state.currentEvent);
-                  return Text(state.toString());
+                  if (state.currentEvent == AuthenticationEvents.logedout) {
+                    return SizedBox.shrink();
+                  } else if (state.currentEvent == AuthenticationEvents.error) {
+                    print(state.errorText);
+                    return Text(state.errorText);
+                  } else {
+                    print(state.currentEvent);
+                    return Text(state.toString());
+                  }
+                },
+                listener: (context, state) {
+                  if (state.currentEvent == AuthenticationEvents.logedin) {
+                    pushNewScreenWithRouteSettings(
+                      context,
+                      settings: null,
+                      screen: EditProfile(),
+                      pageTransitionAnimation: changePageAnimation,
+                    );
+                  }
                 },
               )
             ],
@@ -200,5 +209,42 @@ class _ProfileRouteState extends State<ProfileRoute> {
         ),
       ),
     );
+  }
+
+  void signUpPressed() {
+    if (signupPasswordController.text != signupRepeatPasswordController.text) {
+      authBloc.add(
+          Failure(new User(), 'password and repeat password are not the same'));
+    } else if (!RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(signupEmailController.text)) {
+      authBloc.add(Failure(new User(), 'email is incorrect'));
+    } else {
+      authBloc.add(
+        SignUp(
+          new User(
+            username: signupEmailController.text,
+            password: signupPasswordController.text,
+          ),
+        ),
+      );
+    }
+  }
+
+  void signInPressed() {
+    if (!RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(signinEmailController.text)) {
+      authBloc.add(Failure(new User(), 'email is incorrect'));
+    } else {
+      authBloc.add(
+        Signin(
+          new User(
+            username: signupEmailController.text,
+            password: signupPasswordController.text,
+          ),
+        ),
+      );
+    }
   }
 }
