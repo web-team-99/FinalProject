@@ -1,49 +1,41 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_url/models/user.dart';
+import 'package:test_url/providers/AuthenticationAPI.dart';
 
-enum AuthEvent { login, logout, signup }
+part 'AuthState.dart';
+part 'AuthEvent.dart';
 
-class AuthState {
-  User user;
-  AuthEvent event;
+enum AuthenticationEvents { logedin, logedout, signup, signin, pending, error }
 
-  AuthState({@required this.user, this.event});
-}
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  AuthenticationAPI authenticationAPI = AuthenticationAPI();
 
-class AuthBloc extends Bloc<AuthState, String> {
-  AuthBloc(String initialState) : super(initialState);
+  AuthBloc(AuthState initialState) : super(initialState);
 
   @override
-  Stream<String> mapEventToState(AuthState state) async* {
-    switch (state.event) {
-      case AuthEvent.signup:
-        yield signupUser(state.user);
-        print("Signup state");
-        break;
-      case AuthEvent.login:
-        yield loginUser(state.user);
-        print("Login state");
-        break;
-      case AuthEvent.logout:
-        yield logoutUser(state.user);
-        print("Logout state");
-        break;
-    }
-  }
-
-  dynamic signupUser(User user) {
-    //request to server for signup
-    
-    print('signing up the user');
-    
-  }
-
-  dynamic loginUser(User user) {
-    print('login up the user');
-  }
-
-  dynamic logoutUser(User user) {
-    print('logout the user');
-  }
+  Stream<AuthState> mapEventToState(AuthEvent event) async* {
+    if (event is SignUp) {
+      yield NewAuthState.fromOldAuthState(state, currentEvent: AuthenticationEvents.signup);
+      print("Signup");
+      this.add(Pending(event.user));
+      authenticationAPI
+          .sendSignUpRequest()
+          .then((value) => {print(value), this.add(LoggedIn(event.user))})
+          .onError((error, stackTrace) => {this.add(Failure(event.user))});
+    } 
+    else if (event is Signin) {
+      yield NewAuthState.fromOldAuthState(state, user: event.user, currentEvent: AuthenticationEvents.signin);
+      print("Signin");
+    } 
+    else if (event is LoggedIn) {
+      yield NewAuthState.fromOldAuthState(state, user: event.user, currentEvent: AuthenticationEvents.logedin);
+      print("loggedin");
+    } else if (event is LoggedOut) {
+      print("loggedout");
+    } else if (event is Pending) {
+      yield NewAuthState.fromOldAuthState(state, user: event.user, currentEvent: AuthenticationEvents.pending);
+      print("pending");
+    } else if (event is Failure) {
+      print("failure");
+    }  }
 }

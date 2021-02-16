@@ -126,9 +126,7 @@ class _MainScreenState extends State<MainScreen> {
           create: (context) => InternetCubit(connectivity: connectivity),
         ),
         BlocProvider<AuthBloc>(
-          create: (context) {
-            return AuthBloc("Initial State");
-          },
+          create: (context) => AuthBloc(InitialAuthState()),
         )
       ],
       child: MultiProvider(
