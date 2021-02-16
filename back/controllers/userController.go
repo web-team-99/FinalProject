@@ -206,3 +206,17 @@ func GetUser(c *gin.Context) {
 
 	SendOK(c, &gin.H{"user": &user})
 }
+
+func GetAllUsers(c *gin.Context) {
+	db := c.MustGet("db").(*mgo.Database)
+
+	users := []models.User{}
+	err := db.C(models.UserC).Find(nil).Sort("-score").All(&users)
+	if err != nil {
+		fmt.Println(err)
+		SendBadRequest(c, &gin.H{"message": "empty"})
+		return
+	}
+
+	SendOK(c, &gin.H{"users": &users})
+}
