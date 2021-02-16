@@ -24,6 +24,7 @@ type Project struct {
 	ShortDescription string        `json:"sdesc" form:"sdesc" binding:"required" bson:"sdesc"`
 	Description      string        `json:"desc" form:"desc" bson:"desc"`
 	Price            uint32        `json:"price" form:"price" bson:"price"`
+	Priod            uint16        `json:"priod" form:"priod" bson:"priod"`
 	Assigned         bool          //`json:"assigned" form:"assigned" bson:"assigned"`
 	Image            string        //`json:"image,omitempty" form:"image,omitempty" bson:"image,omitempty"`
 	State            string
