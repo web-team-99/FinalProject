@@ -137,7 +137,8 @@ func GetProjectOffers(c *gin.Context) {
 	fmt.Println(projectid)
 
 	offers := []models.Offer{}
-	err = db.C(models.OfferC).Find(bson.M{"_autherid": userid, "_projectid": projectid}).Sort("-created_at").All(&offers)
+	userQuary := []bson.M{{"_autherid": userid}, {"_freelancerid": userid}}
+	err = db.C(models.OfferC).Find(bson.M{"$or": userQuary, "_projectid": projectid}).Sort("-created_at").All(&offers)
 	if err != nil {
 		SendBadRequest(c, &gin.H{"message": "empty"})
 		return

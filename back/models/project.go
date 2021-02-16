@@ -19,6 +19,7 @@ type Project struct {
 	ID               bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
 	AuthorID         bson.ObjectId `json:"_autherid,omitempty" bson:"_autherid,omitempty"`
 	FreelancerID     bson.ObjectId `json:"_freelancerid,omitempty" bson:"_freelancerid,omitempty"`
+	AcceptedOfferID  bson.ObjectId `json:"_offerid,omitempty" bson:"_offerid,omitempty"`
 	Title            string        `json:"title" form:"title" binding:"required" bson:"title"`
 	ShortDescription string        `json:"sdesc" form:"sdesc" binding:"required" bson:"sdesc"`
 	Description      string        `json:"desc" form:"desc" bson:"desc"`
