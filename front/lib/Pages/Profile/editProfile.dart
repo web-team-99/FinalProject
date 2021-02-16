@@ -118,9 +118,10 @@ class EditProfile extends StatelessWidget {
                     itemCount: 5,
                     itemBuilder: (BuildContext context, int index) =>
                         ProjectAndServiceSuggest(
-                      'http://138.201.6.240:8001/media/blog_photos/increase-virgool.jpg',
+                      'title',
+                      'descripti0n',
                       30,
-                      'sample project',
+                      21,
                     ),
                   ),
                 ),
@@ -139,9 +140,10 @@ class EditProfile extends StatelessWidget {
                     itemCount: 5,
                     itemBuilder: (BuildContext context, int index) =>
                         ProjectAndServiceSuggest(
-                      'http://138.201.6.240:8001/media/blog_photos/omid4.jpg',
-                      100,
-                      'sample service',
+                      'title',
+                      'descripti0n',
+                      30,
+                      21,
                     ),
                   ),
                 ),

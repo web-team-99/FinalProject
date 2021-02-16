@@ -8,7 +8,11 @@ import (
 
 const (
 	// ProjectC holds the name of the projects collection
-	ProjectC = "Project"
+	ProjectC    = "Project"
+	ProjectPath = "/prj/"
+	State0      = "unassigned"
+	State1      = "assigned"
+	State2      = "done"
 )
 
 type Project struct {
@@ -18,8 +22,10 @@ type Project struct {
 	Title            string        `json:"title" form:"title" binding:"required" bson:"title"`
 	ShortDescription string        `json:"sdesc" form:"sdesc" binding:"required" bson:"sdesc"`
 	Description      string        `json:"desc" form:"desc" bson:"desc"`
-	Price            int64         `json:"price" form:"price" binding:"required" bson:"price"`
-	Assigned         bool          `json:"assigned" form:"assigned" bson:"assigned"`
-	CreatedAt        time.Time     `json:"created_at" bson:"created_at"`
-	UpdatedAt        time.Time     `json:"updated_at" bson:"updated_at"`
+	Price            uint32        `json:"price" form:"price" bson:"price"`
+	Assigned         bool          //`json:"assigned" form:"assigned" bson:"assigned"`
+	Image            string        //`json:"image,omitempty" form:"image,omitempty" bson:"image,omitempty"`
+	State            string
+	CreatedAt        time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at" bson:"updated_at"`
 }

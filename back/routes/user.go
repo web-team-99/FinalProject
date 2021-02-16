@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"webprj/controllers"
 	"webprj/middlewares"
 
 	"github.com/gin-gonic/gin"
@@ -9,9 +10,12 @@ import (
 func userRoutes(router *gin.RouterGroup) {
 	user := router.Group("/user")
 	{
-		user.Use(middlewares.IsLoggedIn)
+		// user.Use(middlewares.IsLoggedIn)
 
-		user.GET("/", test)
+		user.PUT("update", middlewares.IsLoggedIn, controllers.UpdateUserInfo)
+		user.GET("/", middlewares.IsLoggedIn, controllers.GetUser)
+
+		user.GET("/byid", controllers.GetUserByID)
 		// user.GET("/jobs", test)
 	}
 
