@@ -6,8 +6,6 @@ abstract class ProjectCreationState {
 }
 
 class ProjectCreationInitialState extends ProjectCreationState {
-  ProjectCreationInitialState(ProjectModel projectModel)
-      : super(project: projectModel);
 }
 
 class NewProjectCreationState extends ProjectCreationState {
