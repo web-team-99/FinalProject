@@ -25,8 +25,8 @@ type Project struct {
 	Description      string        `json:"desc" form:"desc" bson:"desc"`
 	Price            uint32        `json:"price" form:"price" bson:"price"`
 	Priod            uint16        `json:"priod" form:"priod" bson:"priod"`
-	Assigned         bool          //`json:"assigned" form:"assigned" bson:"assigned"`
-	Image            string        //`json:"image,omitempty" form:"image,omitempty" bson:"image,omitempty"`
+	Assigned         bool
+	Image            string
 	State            string
 	CreatedAt        time.Time `json:"created_at" bson:"created_at"`
 	UpdatedAt        time.Time `json:"updated_at" bson:"updated_at"`
