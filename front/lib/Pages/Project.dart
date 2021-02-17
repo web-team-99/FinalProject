@@ -45,68 +45,80 @@ class ProjectService extends StatelessWidget {
               color: Colors.white,
               child: Column(
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1.5,
-                    child: Container(
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(right: 10),
+                                    child: Icon(
+                                      blogDateIcon,
+                                    ),
+                                  ),
+                                  Text(
+                                    '12/26/2020',
+                                    style: theme.textTheme.subtitle1,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(right: 10),
+                                    child: Icon(
+                                      blogTimeIcon,
+                                    ),
+                                  ),
+                                  Text(
+                                    '13:55',
+                                    style: theme.textTheme.subtitle1,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 5),
+                                child: SelectableText(
+                                  'title title asdflks jsdflksj  kdfsj d ls',
+                                  style: theme.textTheme.headline5,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: AsyncImageLoader(
-                            'http://www.aviny.com/album/defa-moghadas/shakhes/aviny/wallpaper/KAMEL/69.jpg'),
                       ),
-                    ),
+                      Flexible(
+                        flex: 1,
+                        child: AspectRatio(
+                          aspectRatio: 1.5,
+                          child: Container(
+                            width: double.infinity,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              child: AsyncImageLoader(
+                                  'http://www.aviny.com/album/defa-moghadas/shakhes/aviny/wallpaper/KAMEL/69.jpg'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 10),
-                                  child: Icon(
-                                    blogDateIcon,
-                                  ),
-                                ),
-                                Text(
-                                  '12/26/2020',
-                                  style: theme.textTheme.subtitle1,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 10),
-                                  child: Icon(
-                                    blogTimeIcon,
-                                  ),
-                                ),
-                                Text(
-                                  '13:55',
-                                  style: theme.textTheme.subtitle1,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 5),
-                          child: SelectableText(
-                            'title title asdflks jsdflksj  kdfsj d ls',
-                            style: theme.textTheme.headline5,
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
@@ -115,8 +127,17 @@ class ProjectService extends StatelessWidget {
                             style: theme.textTheme.bodyText2,
                           ),
                         ),
-                        FreelanceRequest(),
-                        FreelanceRequest(),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 175,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, int index) =>
+                                FreelanceRequest(),
+                          ),
+                        ),
                       ],
                     ),
                   )

@@ -12,8 +12,9 @@ func userRoutes(router *gin.RouterGroup) {
 	{
 		// user.Use(middlewares.IsLoggedIn)
 
-		user.PUT("update", middlewares.IsLoggedIn, controllers.UpdateUserInfo)
+		user.PUT("/update", middlewares.IsLoggedIn, controllers.UpdateUserInfo)
 		user.GET("/", middlewares.IsLoggedIn, controllers.GetUser)
+		user.GET("/all", controllers.GetAllUsers)
 
 		user.GET("/byid", controllers.GetUserByID)
 		// user.GET("/jobs", test)
