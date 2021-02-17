@@ -21,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       authenticationAPI
           .sendSignUpRequest(event.user)
           .then((value) => {print(value), this.add(LoggedIn(event.user))})
-          .onError((error, stackTrace) => {this.add(Failure(event.user, ""))});
+          .onError((error, stackTrace) => {this.add(Failure(event.user, " "))});
     } 
     else if (event is Signin) {
       yield NewAuthState.fromOldAuthState(state, user: event.user, currentEvent: AuthenticationEvents.signin);
