@@ -25,4 +25,6 @@ func InitializeRoutes(router *gin.Engine) {
 	offerRoutes(api)
 	commentRoutes(api)
 
+	moreRoutes(router.Group("/"))
+
 }
