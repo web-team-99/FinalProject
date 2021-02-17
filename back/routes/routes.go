@@ -20,8 +20,10 @@ func InitializeRoutes(router *gin.Engine) {
 	api.Use(middlewares.Connect)
 	api.Use(sessions.Sessions("session", config.Store))
 
-	indexRoutes(api)
+	// indexRoutes(api)
 	userRoutes(api)
 	projectRoutes(api)
+	offerRoutes(api)
+	commentRoutes(api)
 
 }

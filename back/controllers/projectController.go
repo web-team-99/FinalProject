@@ -15,7 +15,7 @@ func CreateProject(c *gin.Context) {
 	db := c.MustGet("db").(*mgo.Database)
 	autherIDstr := c.MustGet("userid").(string)
 
-	imgPath := saveImage(c, models.ProjectPath)
+	// imgPath := saveImage(c, models.ProjectPath)
 
 	autherid := bson.ObjectIdHex(autherIDstr)
 
@@ -35,7 +35,7 @@ func CreateProject(c *gin.Context) {
 	project.ID = bson.NewObjectId()
 	project.AuthorID = autherid
 	project.CreatedAt, project.UpdatedAt = time.Now(), time.Now()
-	project.Image = imgPath
+	// project.Image = imgPath
 	project.State = models.State0
 
 	err = db.C(models.ProjectC).Insert(project)

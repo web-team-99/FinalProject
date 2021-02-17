@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"fmt"
-	"net/http"
 	"regexp"
 	"webprj/controllers"
 
@@ -16,10 +15,7 @@ func IsLoggedIn(c *gin.Context) {
 	userid := session.Get("userid")
 	fmt.Println(userid)
 	if userid == nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "unauthorized",
-		})
-		c.Abort()
+		controllers.SendUnauthorized(c, &gin.H{"message": "unauthorized"})
 		return
 	}
 	c.Set("userid", userid)
