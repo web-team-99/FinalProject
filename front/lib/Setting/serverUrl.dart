@@ -62,11 +62,11 @@ String searchUserUrl = apiServer + '/api/user/byid?userid=';
 //project
 String createNewProjectUrl = '/api/project/new';
 String createOfferUrl = '/api/project/offer';
-String assignOffer = '/api/project/assign?offerid=';
-String projectOffersUrl = apiServer + '/api/project/offer/p?projectid=';
-String createCommentUrl = apiServer + '/api/project/comment';
-String getCommentsUrl = apiServer + '/api/project/comment/p?projectid=';
-String deleteCommentUrl = apiServer + '/api/project/comment/?commentid=';
+String assignOfferUrl = '/api/project/assign?offerid=';
+String projectOffersUrl = apiServer + '/api/offer/project?projectid=';
+String createCommentUrl = apiServer + '/api/comment';
+String getCommentsUrl = apiServer + '/api/comment?projectid=';
+String deleteCommentUrl = apiServer + '/api/comment?commentid=';
 String getProjectUrl = apiServer + '/api/project?projectid=';
 
 String fOffers = apiServer + '/api/project/offer/f'; //???
