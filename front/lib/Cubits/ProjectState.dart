@@ -7,4 +7,4 @@ class Failed extends ProjectState {
   Failed(this.error);
 }
 
-class 
+

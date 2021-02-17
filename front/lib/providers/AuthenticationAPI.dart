@@ -6,8 +6,8 @@ import 'package:test_url/Setting/serverUrl.dart';
 import 'package:test_url/models/user.dart';
 
 class AuthenticationAPI {
-  Future<String> sendSignUpRequest(User user) async {
-    var response, data;
+  Future<User> sendSignUpRequest(User user) async {
+    var response;
     Map<String, String> headers = {
       "Content-type": "application/x-www-form-urlencoded"
     };
@@ -18,27 +18,56 @@ class AuthenticationAPI {
       if (response.statusCode >= 400) {
         throw HttpException("Bad Connection");
       }
-      data = response.toString();
-      // data = json.decode(utf8.decode(response.bodyBytes));
-      print(data);
-    } catch (e) {
-      print(e.toString());
-    }
+      final responseData =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      if (responseData == null) return null;
+      final userData = responseData['user'] as Map<String, dynamic>;
 
-    // await Future.delayed(Duration(seconds: 10));
-    return Future.value(data);
+      final resUser = User(
+        id: userData['_id'],
+        name: userData['name'],
+        lastName: userData['lname'],
+        email: userData['email'],
+        phone: userData['phone'],
+        score: userData['Score'],
+        freelanceNo: userData['FreelanceNo'],
+        projectNo: userData['ProjectNo'],
+      );
+      return resUser;
+    } catch (e) {
+      throw (e);
+    }
   }
 
-  Future<String> sendLoginRequest(String email, String password) async {
-    var response, data;
+  Future<User> sendLoginRequest(String email, String password) async {
+    var response;
     Map<String, String> headers = {
       "Content-type": "application/x-www-form-urlencoded"
     };
     String body = "password=$password&email=$email";
     try {
       response = http.post(loginUrl, headers: headers, body: body);
-    } catch (e) {}
-    return Future.value(data);
-  }
+      if (response.statusCode >= 400) {
+        throw HttpException("Bad Connection");
+      }
+      final responseData =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      if (responseData == null) return null;
+      final userData = responseData['user'] as Map<String, dynamic>;
 
+      final resUser = User(
+        id: userData['_id'],
+        name: userData['name'],
+        lastName: userData['lname'],
+        email: userData['email'],
+        phone: userData['phone'],
+        score: userData['Score'],
+        freelanceNo: userData['FreelanceNo'],
+        projectNo: userData['ProjectNo'],
+      );
+      return resUser;
+    } catch (e) {
+      throw (e);
+    }
+  }
 }
