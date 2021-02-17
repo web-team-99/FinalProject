@@ -9,11 +9,16 @@ const (
 )
 
 type ContactUs struct {
-	Name    string `json:"name" form:"name" bson:"name"`
-	Address string `json:"address" form:"address" bson:"address"`
+	Name    string
+	Address string
 }
 
 type AboutUs struct {
-	Name    string `json:"name" form:"name" bson:"name"`
-	Address string `json:"url" form:"url" bson:"url"`
+	Question string
+	Answer   string
+}
+
+type Rules struct {
+	Title   string
+	Content string
 }
