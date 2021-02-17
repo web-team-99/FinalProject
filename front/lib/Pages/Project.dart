@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_url/Components/asyncImageLoader.dart';
+import 'package:test_url/Components/comment.dart';
 import 'package:test_url/Components/freelanceRequest.dart';
 import 'package:test_url/Setting/numbers.dart';
 import 'package:test_url/Setting/platform.dart';
@@ -138,6 +139,8 @@ class ProjectService extends StatelessWidget {
                                 FreelanceRequest(),
                           ),
                         ),
+                        Comment(),
+                        Comment(),
                       ],
                     ),
                   )

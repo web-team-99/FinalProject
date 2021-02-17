@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:test_url/Components/CustomRaisedButton.dart';
 import 'package:test_url/Components/HomeRoute/ProjectAndServiceSuggest.dart';
 import 'package:test_url/Components/HomeRoute/homeListHeader.dart';
@@ -7,9 +8,11 @@ import 'package:test_url/Components/HomeRoute/webDesktopHomeFooter.dart';
 import 'package:test_url/Components/HomeRoute/webDesktopHomeImageAndText.dart';
 import 'package:test_url/Components/HomeRoute/webMobileHomeFooter.dart';
 import 'package:test_url/Components/HomeRoute/webMobileHomeImageAndText.dart';
+import 'package:test_url/Pages/moreProjects.dart';
 import 'package:test_url/Setting/numbers.dart';
 import 'package:test_url/Setting/platform.dart';
 import 'package:test_url/Setting/strings.dart';
+import 'package:test_url/Styles/animations.dart';
 
 class HomeRoute extends StatefulWidget {
   @override
@@ -122,7 +125,12 @@ class _HomeRouteState extends State<HomeRoute> {
                 HomeListHeader(
                   servicesHeader,
                   () => {
-                    //TODO
+                    pushNewScreenWithRouteSettings(
+                      context,
+                      settings: null,
+                      screen: MoreProjects(),
+                      pageTransitionAnimation: changePageAnimation,
+                    )
                   },
                 ),
                 Container(
