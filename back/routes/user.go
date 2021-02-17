@@ -20,10 +20,10 @@ func userRoutes(router *gin.RouterGroup) {
 		// user.GET("/jobs", test)
 	}
 
-	guest := router.Group("/guest")
-	{
-		guest.GET("/:userid", test)
-		// guest.GET("/jobs/:userid", test)
+	// guest := router.Group("/guest")
+	// {
+	// 	guest.GET("/:userid", test)
+	// 	// guest.GET("/jobs/:userid", test)
 
-	}
+	// }
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Connect middleware
+// Connect to db middleware
 func Connect(c *gin.Context) {
 	s := config.Session.Clone()
 
