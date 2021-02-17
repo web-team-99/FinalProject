@@ -14,11 +14,11 @@ type ContactUs struct {
 }
 
 type AboutUs struct {
-	Question string
-	Answer   string
+	Title   string
+	Content string
 }
 
 type Rules struct {
-	Title   string
-	Content string
+	Question string
+	Answer   string
 }
