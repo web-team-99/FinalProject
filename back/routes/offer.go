@@ -9,9 +9,10 @@ import (
 
 func offerRoutes(router *gin.RouterGroup) {
 	offer := router.Group("/offer")
+	offer.Use(middlewares.IsLoggedIn)
 
-	offer.POST("/new", middlewares.IsLoggedIn, controllers.CreateOffer)
-	offer.GET("/project", middlewares.IsLoggedIn, controllers.GetProjectOffers)
-	offer.GET("/user", middlewares.IsLoggedIn, controllers.GetUserOffers)
-	offer.GET("/freelancer", middlewares.IsLoggedIn, controllers.GetFreelancerOffers)
+	offer.POST("/", controllers.CreateOffer)
+	offer.GET("/project", controllers.GetProjectOffers)
+	offer.GET("/user", controllers.GetUserOffers)
+	offer.GET("/freelancer", controllers.GetFreelancerOffers)
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"time"
 	"webprj/models"
 
@@ -19,13 +18,12 @@ func CreateOffer(c *gin.Context) {
 	offer := models.Offer{}
 	err := c.Bind(&offer)
 	if err != nil {
-		fmt.Println(err)
 		SendBadRequest(c, &gin.H{"message": "Invalid request body"})
 		return
 	}
 
-	if offer.Price <= 0 {
-		SendBadRequest(c, &gin.H{"message": "price must be positive"})
+	if offer.Price <= 0 || offer.Priod <= 0 {
+		SendBadRequest(c, &gin.H{"message": "price and priod must be positive"})
 		return
 	}
 
@@ -38,12 +36,17 @@ func CreateOffer(c *gin.Context) {
 	project := models.Project{}
 	err = db.C(models.ProjectC).FindId(projectid).One(&project)
 	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "project not found"})
+		SendNotFound(c, &gin.H{"message": "project not found"})
 		return
 	}
 
 	if freelancerid == project.AuthorID {
-		SendBadRequest(c, &gin.H{"message": "auther can't offer"})
+		SendForbidden(c, &gin.H{"message": "auther can't offer"})
+		return
+	}
+
+	if project.State != models.State0 {
+		SendForbidden(c, &gin.H{"message": "project has been assigned"})
 		return
 	}
 
@@ -51,15 +54,14 @@ func CreateOffer(c *gin.Context) {
 	offer.AuthorID = project.AuthorID
 	offer.ProjectID = projectid
 	offer.FreelancerID = freelancerid
-	// fmt.Println(time.Parse("2006-01-02 3:04PM", "1970-01-01 9:00PM"))
 	offer.CreatedAt, offer.UpdatedAt = time.Now(), time.Now()
 
 	err = db.C(models.OfferC).Insert(offer)
 	if err != nil {
-		fmt.Println(err)
-		SendBadRequest(c, &gin.H{"message": "Error in the offer insertion"})
+		SendInternalServerError(c, &gin.H{"message": "Error in the offer insertion"})
 		return
 	}
+
 	SendOK(c, &gin.H{"offer": &offer})
 }
 
@@ -72,13 +74,12 @@ func GetProjectOffers(c *gin.Context) {
 		SendBadRequest(c, &gin.H{"message": err.Error()})
 		return
 	}
-	fmt.Println(projectid)
 
 	offers := []models.Offer{}
 	userQuary := []bson.M{{"_autherid": userid}, {"_freelancerid": userid}}
 	err = db.C(models.OfferC).Find(bson.M{"$or": userQuary, "_projectid": projectid}).Sort("-created_at").All(&offers)
 	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "empty"})
+		SendNotFound(c, &gin.H{"message": "empty"})
 		return
 	}
 
@@ -108,7 +109,7 @@ func GetFreelancerOffers(c *gin.Context) {
 	offers := []models.Offer{}
 	err := db.C(models.OfferC).Find(bson.M{"_freelancerid": userid}).Sort("-created_at").All(&offers)
 	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "empty"})
+		SendNotFound(c, &gin.H{"message": "empty"})
 		return
 	}
 
