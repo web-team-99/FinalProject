@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"time"
 	"webprj/models"
 
@@ -136,7 +135,6 @@ func UpdateUserInfo(c *gin.Context) {
 
 	err = db.C(models.UserC).UpdateId(userid, old)
 	if err != nil {
-		fmt.Println(err)
 		SendInternalServerError(c, &gin.H{"message": "Error in updating user"})
 		return
 	}
@@ -193,7 +191,6 @@ func GetAllUsers(c *gin.Context) {
 	users := []models.User{}
 	err := db.C(models.UserC).Find(nil).Sort("-score").All(&users)
 	if err != nil {
-		fmt.Println(err)
 		SendNotFound(c, &gin.H{"message": "empty"})
 		return
 	}
@@ -218,7 +215,6 @@ func isPhoneNew(db *mgo.Database, userid bson.ObjectId, phone string) bool {
 func isEmailNew(db *mgo.Database, userid bson.ObjectId, email string) bool {
 	count, err := db.C(models.UserC).Find(bson.M{"email": email, "_id": bson.M{"$ne": userid}}).Count()
 	if err != nil || count > 0 {
-		fmt.Println(err)
 		return false
 	}
 	return true

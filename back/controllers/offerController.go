@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 	"webprj/models"
 
@@ -62,122 +61,6 @@ func CreateOffer(c *gin.Context) {
 		return
 	}
 	SendOK(c, &gin.H{"offer": &offer})
-}
-
-// AssignProject , quary: offerid , auth
-func AssignProject(c *gin.Context) {
-	db := c.MustGet("db").(*mgo.Database)
-	userid := getIDfromContex(c, "userid")
-	offerid, err := getIDfromQuery(c, "offerid")
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": err.Error()})
-		return
-	}
-	fmt.Println(offerid)
-
-	offer := models.Offer{}
-	err = db.C(models.OfferC).FindId(offerid).One(&offer)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "offer not found"})
-		return
-	}
-
-	if offer.AuthorID != userid {
-		SendBadRequest(c, &gin.H{"message": "permission denied"})
-		return
-	}
-
-	project := models.Project{}
-	err = db.C(models.ProjectC).FindId(offer.ProjectID).One(&project)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "project not found"})
-		return
-	}
-
-	if project.State != models.State0 {
-		SendBadRequest(c, &gin.H{"message": "project has been assigned"})
-		return
-	}
-
-	project.Assigned = true
-	project.AcceptedOfferID = offer.ID
-	project.State = models.State1
-	project.FreelancerID = offer.FreelancerID
-	db.C(models.ProjectC).UpdateId(project.ID, &project)
-
-	SendOK(c, &gin.H{"message": "offer assigned"})
-}
-
-// DoneProject , quary: offerid & score , auth
-func DoneProject(c *gin.Context) {
-	db := c.MustGet("db").(*mgo.Database)
-	userid := getIDfromContex(c, "userid")
-	offerid, err := getIDfromQuery(c, "offerid")
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": err.Error()})
-		return
-	}
-	fmt.Println(offerid)
-
-	scorestr, ok := c.GetQuery("score")
-	if !ok {
-		SendBadRequest(c, &gin.H{"message": "score not found"})
-		return
-	}
-	score, err := strconv.Atoi(scorestr)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "score must be a number"})
-		return
-	}
-
-	offer := models.Offer{}
-	err = db.C(models.OfferC).FindId(offerid).One(&offer)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "offer not found"})
-		return
-	}
-
-	if offer.AuthorID != userid {
-		SendBadRequest(c, &gin.H{"message": "permission denied"})
-		return
-	}
-
-	project := models.Project{}
-	err = db.C(models.ProjectC).FindId(offer.ProjectID).One(&project)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "project not found"})
-		return
-	}
-
-	if project.State != models.State1 {
-		SendBadRequest(c, &gin.H{"message": "project not assigned"})
-		return
-	}
-
-	freelancer := models.User{}
-	err = db.C(models.UserC).FindId(offer.FreelancerID).One(&freelancer)
-	if err != nil {
-		SendBadRequest(c, &gin.H{"message": "freelancer not found"})
-		return
-	}
-
-	numOfProjects := freelancer.FreelaceNo
-	totalScore := freelancer.Score
-	newScore := totalScore*numOfProjects + uint16(score)
-	numOfProjects++
-	newScore /= numOfProjects
-
-	freelancer.FreelaceNo = numOfProjects
-	freelancer.Score = newScore
-
-	// project.Assigned = true
-	project.State = models.State2
-	// project.Price = offer.Price
-	// project.FreelancerID = offer.FreelancerID
-	db.C(models.ProjectC).UpdateId(project.ID, &project)
-	db.C(models.UserC).UpdateId(freelancer.ID, &freelancer)
-
-	SendOK(c, &gin.H{"message": "project done"})
 }
 
 // GetProjectOffers , quary: projectid , auth
