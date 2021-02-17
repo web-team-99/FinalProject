@@ -15,7 +15,7 @@ class ProjectsProvider with ChangeNotifier {
 
   Future<void> fetchProjects() async {
     _projects = [];
-    final url = projectsApiUrl;
+    final url = unassignedProjectsUrl;
     try {
       final response = await http.get(url);
       if (response.statusCode >= 400) {

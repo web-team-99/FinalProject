@@ -4,18 +4,18 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:test_url/Setting/serverUrl.dart';
-import 'package:test_url/models/ProviderModels/ServiceModel.dart';
+import 'package:test_url/models/ProjectModel.dart';
 
-class ServicesProvider with ChangeNotifier {
-  List<ServiceModel> _services;
+class AssignedProjectsProvider with ChangeNotifier {
+  List<ProjectModel> _projects;
 
-  List<ServiceModel> get services {
-    return [..._services];
+  List<ProjectModel> get projects {
+    return [..._projects];
   }
 
   Future<void> fetchProjects() async {
-    _services = [];
-    final url = servicesApiUrl;
+    _projects = [];
+    final url = assignedProjectsUrl;
     try {
       final response = await http.get(url);
       if (response.statusCode >= 400) {
@@ -26,13 +26,14 @@ class ServicesProvider with ChangeNotifier {
           json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
       if (responseData == null) return;
       responseData.forEach((element) {
-        _services.add(ServiceModel(
+        _projects.add(ProjectModel(
             id: element['id'],
             authorId: element['authorId'],
+            freelanceId: element['freelanceId'],
             title: element['title'],
             shortDescription: element['shortDescription'],
             description: element['description'],
-            price: element['price'],
+            isAssigned: element['assigned'],
             createdAt: element['createdAt']
             ));
       });

@@ -36,5 +36,38 @@ String pricingsApiUrl = apiServer + '/api/pricings';
 String rulesApiUrl = apiServer + '/api/rules';
 String blogApiUrl = apiServer + '/api/blog';
 
-String projectsApiUrl = apiServer + '/api/projects';
-String servicesApiUrl = apiServer + '/api/services';
+//projects Provider for each
+String projectsApiUrl = apiServer + '/api/project/all';
+String unassignedProjectsUrl = apiServer + '/api/project/unassigned';
+String assignedProjectsUrl = apiServer + '/api/project/assigned';
+
+//public AuthApi
+String signupUrl = apiServer + 'api/register';
+String loginUrl = apiServer + 'api/login';
+
+//user  UserDataApi
+String usersAllProjects = apiServer + '/api/project/user/all?userid=';
+String usersUnassignedProjectsUrl =
+    apiServer + '/api/project/user/unassigned?userid=';
+String usersAssignedProjectsUrl =
+    apiServer + '/api/project/user/assigned?userid=';
+String usersAcceptedProjectsUrl =
+    apiServer + '/api/project/user/accepted?userid=';
+String userOffers = apiServer + '/api/project/offer/u';
+String updateProfileUrl = apiServer + '/api/user/update';
+
+//search user by id
+String searchUserUrl = apiServer + '/api/user/byid?userid=';
+
+//project
+String createNewProjectUrl = '/api/project/new';
+String createOfferUrl = '/api/project/offer';
+String assignOffer = '/api/project/assign?offerid=';
+String projectOffersUrl = apiServer + '/api/project/offer/p?projectid=';
+String createCommentUrl = apiServer + '/api/project/comment';
+String getCommentsUrl = apiServer + '/api/project/comment/p?projectid=';
+String deleteCommentUrl = apiServer + '/api/project/comment/?commentid=';
+String getProjectUrl = apiServer + '/api/project?projectid=';
+
+String fOffers = apiServer + '/api/project/offer/f'; //???
+String user = apiServer + '/api/user'; //???
