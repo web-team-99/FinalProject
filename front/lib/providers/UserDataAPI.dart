@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:test_url/Setting/serverUrl.dart';
 import 'package:test_url/models/OfferModel.dart';
-import 'package:test_url/models/ProviderModels/ProjectModel.dart';
+import 'package:test_url/models/ProjectModel.dart';
 import 'package:test_url/models/user.dart';
 
 class UserDataApi {

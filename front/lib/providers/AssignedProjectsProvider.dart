@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:test_url/Setting/serverUrl.dart';
-import 'package:test_url/models/ProviderModels/ProjectModel.dart';
+import 'package:test_url/models/ProjectModel.dart';
 
 class AssignedProjectsProvider with ChangeNotifier {
   List<ProjectModel> _projects;

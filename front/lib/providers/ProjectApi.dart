@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:test_url/models/CommentModel.dart';
 import 'package:test_url/models/OfferModel.dart';
-import 'package:test_url/models/ProviderModels/ProjectModel.dart';
+import 'package:test_url/models/ProjectModel.dart';
 
 class ProjectApi {
   
