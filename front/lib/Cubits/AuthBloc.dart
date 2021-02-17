@@ -15,11 +15,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is SignUp) {
-      yield NewAuthState.fromOldAuthState(state, currentEvent: AuthenticationEvents.signup);
+      yield NewAuthState.fromOldAuthState(state, currentEvent: AuthenticationEvents.signup, user: event.user);
       print("Signup");
       this.add(Pending(event.user));
       authenticationAPI
-          .sendSignUpRequest()
+          .sendSignUpRequest(event.user.username, event.user.password)
           .then((value) => {print(value), this.add(LoggedIn(event.user))})
           .onError((error, stackTrace) => {this.add(Failure(event.user))});
     } 

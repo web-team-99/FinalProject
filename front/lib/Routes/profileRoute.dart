@@ -186,7 +186,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   //   screen: EditProfile(),
                   //   pageTransitionAnimation: changePageAnimation,
                   // )
-                  authBloc.add(SignUp(new User()))
+                  authBloc.add(SignUp(new User(name: 'mahfjlshf@gmail.com', password: '12345678')))
                 },
               ),
               BlocBuilder<AuthBloc, AuthState>(
