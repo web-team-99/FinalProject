@@ -8,35 +8,24 @@ import (
 )
 
 func projectRoutes(router *gin.RouterGroup) {
-	path := router.Group("/project")
+	project := router.Group("/project")
 
-	path.POST("/new", middlewares.IsLoggedIn, controllers.CreateProject)
-	path.POST("/offer", middlewares.IsLoggedIn, controllers.CreateOffer)
-	path.GET("/assign", middlewares.IsLoggedIn, controllers.AssignProject)
-	path.GET("/do", middlewares.IsLoggedIn, controllers.DoneProject)
+	project.POST("/", middlewares.IsLoggedIn, controllers.CreateProject)
+	project.GET("/assign", middlewares.IsLoggedIn, controllers.AssignProject)
+	project.GET("/do", middlewares.IsLoggedIn, controllers.DoProject)
 
-	path.GET("/all", controllers.GetAllProjects)
-	path.GET("/unassigned", controllers.GetAllUnassignedProjects)
-	path.GET("/assigned", controllers.GetAllAssignedProjects)
-	path.GET("/", controllers.GetProject)
+	project.GET("/", controllers.GetProject)
+	project.GET("/all", controllers.GetAllProjects)
+	project.GET("/unassigned", controllers.GetAllUnassignedProjects)
+	project.GET("/assigned", controllers.GetAllAssignedProjects)
+	project.GET("/done", controllers.GetAllDoneProjects)
 
-	user := path.Group("/user")
+	user := project.Group("/user")
 
 	user.GET("/all", controllers.GetAllUserProjects)
 	user.GET("/unassigned", controllers.GetAllUserUnassignedProjects)
 	user.GET("/assigned", controllers.GetAllUserAssignedProjects)
+	user.GET("/done", controllers.GetAllUserDoneProjects)
 	user.GET("/accepted", middlewares.IsLoggedIn, controllers.GetAllUserAcceptedProjects)
-
-	offer := path.Group("/offer")
-
-	offer.GET("/p", middlewares.IsLoggedIn, controllers.GetProjectOffers)
-	offer.GET("/u", middlewares.IsLoggedIn, controllers.GetUserOffers)
-	offer.GET("/f", middlewares.IsLoggedIn, controllers.GetFreelancerOffers)
-
-	comment := path.Group("/comment")
-
-	comment.POST("/", middlewares.IsLoggedIn, controllers.CreateComment)
-	comment.GET("/p", controllers.GetProjectComments)
-	comment.DELETE("/", middlewares.IsLoggedIn, controllers.DeleteProjectComment)
 
 }
