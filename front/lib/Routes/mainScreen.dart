@@ -16,6 +16,7 @@ import 'package:test_url/Setting/platform.dart';
 import 'package:test_url/Styles/icons.dart';
 import 'package:test_url/Styles/themes.dart';
 import 'package:test_url/models/user.dart';
+import 'package:test_url/providers/AssignedProjectsProvider.dart';
 import 'package:test_url/providers/MorePageProviders/aboutUsProvider.dart';
 import 'package:test_url/providers/MorePageProviders/blogPostProvider.dart';
 import 'package:test_url/providers/MorePageProviders/blogProvider.dart';
@@ -26,6 +27,7 @@ import 'package:test_url/providers/MorePageProviders/pricingProvider.dart';
 import 'package:test_url/providers/MorePageProviders/rulesProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_url/providers/ProjectsProvider.dart';
 
 class MainScreen extends StatefulWidget {
   final MainTab initialTab;
@@ -136,6 +138,7 @@ class _MainScreenState extends State<MainScreen> {
           ChangeNotifierProvider.value(value: RuleProvider()),
           ChangeNotifierProvider.value(value: BlogProvider()),
           ChangeNotifierProvider.value(value: BlogPostProvider()),
+          ChangeNotifierProvider.value(value: ProjectsProvider()),
         ],
         child: MaterialApp(
           theme: defaultTheme,

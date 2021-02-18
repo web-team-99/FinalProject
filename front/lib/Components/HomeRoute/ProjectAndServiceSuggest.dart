@@ -7,8 +7,8 @@ import 'package:test_url/Styles/animations.dart';
 class ProjectAndServiceSuggest extends StatelessWidget {
   final String title;
   final String description;
-  final int price;
-  final int id;
+  final double price;
+  final String id;
 
   ProjectAndServiceSuggest(this.title, this.description, this.price, this.id);
 

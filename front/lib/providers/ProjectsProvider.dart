@@ -24,15 +24,15 @@ class ProjectsProvider with ChangeNotifier {
 
       final responseData =
           json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
-      if (responseData == null) return;
+      if (responseData == null) return null;
       responseData.forEach((element) {
         _projects.add(ProjectModel(
-            id: element['id'],
-            authorId: element['authorId'],
-            freelanceId: element['freelanceId'],
+            id: element['_id'],
+            authorId: element['_autherId'],
+            freelanceId: element['_freelanceId'],
             title: element['title'],
-            shortDescription: element['shortDescription'],
-            description: element['description'],
+            shortDescription: element['sdesc'],
+            description: element['desc'],
             isAssigned: element['assigned'],
             createdAt: element['createdAt']
             ));
