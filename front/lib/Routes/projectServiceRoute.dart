@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_url/Components/HomeRoute/ProjectAndServiceSuggest.dart';
 import 'package:test_url/Components/ProfileRoute/loginHeader.dart';
-import 'package:test_url/Cubits/InternetStateCubit.dart';
 import 'package:test_url/Cubits/ProjectCreationBloc.dart';
 import 'package:test_url/Pages/CustomDialog.dart';
 
@@ -62,16 +61,7 @@ class _ProjectServiceRouteState extends State<ProjectServiceRoute> {
                 left: pagesRightAndLeftMargin(_width, _mobileView),
                 right: pagesRightAndLeftMargin(_width, _mobileView),
               ),
-              child: BlocBuilder<InternetCubit, InternetState>(
-                  builder: (context, state) {
-                if (state is InternetDisconnected) {
-                  return CustomDialog(
-                    title: "Disconnected",
-                    description:
-                        "You are disconnected from the server.\nPlease check your connection status.",
-                  );
-                }
-                return Column(
+              child: Column(
                   children: [
                     LoginHeader('create a project / service'),
                     Container(
@@ -146,12 +136,12 @@ class _ProjectServiceRouteState extends State<ProjectServiceRoute> {
                       ),
                     ),
                   ],
-                );
-              }),
+              )
+              ),
             ),
           ),
         ),
-      ),
+      
     );
   }
 }

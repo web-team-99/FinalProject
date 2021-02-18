@@ -5,7 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:test_url/Components/ProfileRoute/loginHeader.dart';
 import 'package:test_url/Cubits/AuthBloc.dart';
-import 'package:test_url/Cubits/InternetStateCubit.dart';
+
 import 'package:test_url/Pages/CustomDialog.dart';
 import 'package:test_url/Pages/Profile/editProfile.dart';
 
@@ -68,25 +68,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
   Widget createBody(BuildContext context, ThemeData theme) {
     authBloc = BlocProvider.of<AuthBloc>(context);
 
-    return BlocBuilder<InternetCubit, InternetState>(builder: (context, state) {
-      if (state is InternetDisconnected) {
-        return Center(
-          child: CustomDialog(
-            title: "Disconnected",
-            description:
-                "You are disconnected from the server.\nPlease check your connection status.",
-          ),
-        );
-      }
       return signupNLoginContent(context, theme);
-      // return BlocBuilder(
-      //   builder: (context, state) {
-      //     switch(state){
-
-      //     }
-      //   },
-      // );
-    });
   }
 
   Widget signupNLoginContent(BuildContext context, ThemeData theme) {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_url/Cubits/InternetStateCubit.dart';
+
 import 'package:test_url/Pages/CustomDialog.dart';
 
 import 'package:test_url/Setting/numbers.dart';
@@ -59,16 +59,8 @@ class _SearchRouteState extends State<SearchRoute> {
               left: pagesRightAndLeftMargin(_width, _mobileView),
               right: pagesRightAndLeftMargin(_width, _mobileView),
             ),
-            child: BlocBuilder<InternetCubit, InternetState>(
-                builder: (context, state) {
-              if (state is InternetDisconnected) {
-                return CustomDialog(
-                  title: "Disconnected",
-                  description:
-                      "You are disconnected from the server.\nPlease check your connection status.",
-                );
-              }
-              return Column(
+            child: 
+              Column(
                 children: [
                   Text(
                     'search state: ' + _state.toString(),
@@ -82,11 +74,11 @@ class _SearchRouteState extends State<SearchRoute> {
                     onPressed: () => changeState(),
                   ),
                 ],
-              );
-            }),
+              )
+            ),
           ),
         ),
-      ),
+     
     );
   }
 }

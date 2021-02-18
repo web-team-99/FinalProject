@@ -42,8 +42,8 @@ String unassignedProjectsUrl = apiServer + '/api/project/unassigned';
 String assignedProjectsUrl = apiServer + '/api/project/assigned';
 
 //public AuthApi
-String signupUrl = apiServer + 'api/register';
-String loginUrl = apiServer + 'api/login';
+String signupUrl = apiServer + '/api/register';
+String loginUrl = apiServer + '/api/login';
 
 //user  UserDataApi
 String usersAllProjects = apiServer + '/api/project/user/all?userid=';

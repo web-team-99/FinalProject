@@ -1,8 +1,8 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:test_url/Cubits/AuthBloc.dart';
-import 'package:test_url/Cubits/InternetStateCubit.dart';
+
 import 'package:test_url/Enums/homeOptionsEnum.dart';
 import 'package:test_url/Enums/mainTabsEnum.dart';
 import 'package:test_url/Enums/moreOptionsEnum.dart';
@@ -32,18 +32,18 @@ class MainScreen extends StatefulWidget {
   final MoreOption moreOption;
   final HomeOption homeOption;
   final int id;
-  final Connectivity connectivity;
+  
 
   MainScreen(
       {@required this.initialTab,
       this.moreOption,
       this.homeOption,
       this.id,
-      this.connectivity});
+      });
 
   State<StatefulWidget> createState() {
     return _MainScreenState(
-        initialTab, moreOption, homeOption, id, connectivity);
+        initialTab, moreOption, homeOption, id);
   }
 }
 
@@ -54,10 +54,10 @@ class _MainScreenState extends State<MainScreen> {
   final MoreOption _moreOption;
   final HomeOption _homeOption;
   final int _id;
-  final Connectivity connectivity;
+
 
   _MainScreenState(this._initialTab, this._moreOption, this._homeOption,
-      this._id, this.connectivity);
+      this._id);
 
   @override
   void initState() {
@@ -122,9 +122,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<InternetCubit>(
-          create: (context) => InternetCubit(connectivity: connectivity),
-        ),
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(InitialAuthState()),
         )

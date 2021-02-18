@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:test_url/Enums/mainTabsEnum.dart';
@@ -14,14 +13,12 @@ void main() {
   FluroMainRouter.defineRoutes();
   
   runApp(MyApp(
-    connectivity: Connectivity(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final Connectivity connectivity;
 
-  MyApp({@required this.connectivity});
+  MyApp();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,6 @@ class MyApp extends StatelessWidget {
         theme: defaultTheme, //set main theme
         home: MainScreen(
           initialTab: MainTab.home,
-          connectivity: connectivity,
         ),
         initialRoute: '/',
         onGenerateRoute: FluroMainRouter.router.generator,

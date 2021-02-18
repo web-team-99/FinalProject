@@ -8,13 +8,16 @@ import 'package:test_url/models/user.dart';
 class AuthenticationAPI {
   Future<User> sendSignUpRequest(User user) async {
     var response;
-    Map<String, String> headers = {"Content-type": "multipart/form-data;"};
+    Map<String, String> headers = {"Content-type": "multipart/form-data"};
+    // String body =
+    //     "name=${user.name}&lname=${user.lastName}&password=${user.password}&email=${user.email}&phone=${user.phone}";
     String body =
-        "name=${user.name}&lname=${user.lastName}&password=${user.password}&email=${user.email}&phone=${user.phone}";
+        "name=mohammad&lname=mir&password=789&email=mohammad123@gmail.com&phone=0915854654";
     try {
       response = await http.post(signupUrl, headers: headers, body: body);
       if (response.statusCode >= 400) {
-        throw HttpException("Bad Connection");
+        // throw HttpException("Bad Connection");
+        print(response.statusCode);
       }
       final responseData =
           json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
@@ -39,7 +42,7 @@ class AuthenticationAPI {
 
   Future<User> sendLoginRequest(String email, String password) async {
     var response;
-    Map<String, String> headers = {"Content-type": "multipart/form-data;"};
+    Map<String, String> headers = {"Content-type": "multipart/form-data"};
     String body = "password=$password&email=$email";
     try {
       response = http.post(loginUrl, headers: headers, body: body);

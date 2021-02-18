@@ -34,7 +34,6 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   flutter_bloc: ^6.0.5
-  connectivity_plus: ^0.5.0
   getwidget: ^1.1.0
   equatable: ^1.2.6
 
