@@ -10,7 +10,7 @@ class AuthenticationAPI {
     var response;
     Map<String, String> headers = {"Content-type": "multipart/form-data"};
     String body =
-        "name=mohammad&lname=mir&password=789&email=mohammad123@gmail.com&phone=0915854654";
+        "name=${user.name}&lname=${user.lastName}&password=${user.password}&email=${user.email}&phone=${user.phone}";
     try {
       response = await http.post(signupUrl, headers: headers, body: body);
       if (response.statusCode >= 400) {
