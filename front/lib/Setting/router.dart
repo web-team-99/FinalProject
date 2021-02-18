@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:test_url/Enums/mainTabsEnum.dart';
@@ -13,6 +14,7 @@ class FluroMainRouter {
         handlerFunc: (BuildContext context, Map<String, dynamic> params) {
       return MainScreen(
         initialTab: mainTab,
+        connectivity: Connectivity(),
       );
     });
   }
@@ -23,6 +25,7 @@ class FluroMainRouter {
       return MainScreen(
         initialTab: MainTab.more,
         moreOption: moreOption,
+        connectivity: Connectivity(),
       );
     });
   }
@@ -33,6 +36,7 @@ class FluroMainRouter {
       initialTab: MainTab.more,
       moreOption: MoreOption.blog,
       id: int.parse(params['id'][0]),
+      connectivity: Connectivity(),
     );
   });
 

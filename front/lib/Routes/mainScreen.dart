@@ -39,7 +39,7 @@ class MainScreen extends StatefulWidget {
       this.moreOption,
       this.homeOption,
       this.id,
-      @required this.connectivity});
+      this.connectivity});
 
   State<StatefulWidget> createState() {
     return _MainScreenState(
