@@ -9,8 +9,6 @@ class AuthenticationAPI {
   Future<User> sendSignUpRequest(User user) async {
     var response;
     Map<String, String> headers = {"Content-type": "multipart/form-data"};
-    // String body =
-    //     "name=${user.name}&lname=${user.lastName}&password=${user.password}&email=${user.email}&phone=${user.phone}";
     String body =
         "name=mohammad&lname=mir&password=789&email=mohammad123@gmail.com&phone=0915854654";
     try {
