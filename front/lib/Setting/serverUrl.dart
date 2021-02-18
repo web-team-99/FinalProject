@@ -28,12 +28,12 @@ String rulesUrl = currentServer + rulesRouteString;
 String blogUrl = currentServer + blogRouteString;
 String softwareTeamUrl = currentServer + softwareTeamRouteString;
 
-String aboutUsApiUrl = apiServer + '/api/about-us';
-String contactUsApiUrl = apiServer + '/api/contact-us';
+String aboutUsApiUrl = apiServer + '/aboutus';
+String contactUsApiUrl = apiServer + '/contactus';
 String faqApiUrl = apiServer + '/api/faq';
 String manualApiUrl = apiServer + '/api/manual';
 String pricingsApiUrl = apiServer + '/api/pricings';
-String rulesApiUrl = apiServer + '/api/rules';
+String rulesApiUrl = apiServer + '/rules';
 String blogApiUrl = apiServer + '/api/blog';
 
 //projects Provider for each
