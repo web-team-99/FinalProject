@@ -53,8 +53,9 @@ String usersAssignedProjectsUrl =
     apiServer + '/api/project/user/assigned?userid=';
 String usersAcceptedProjectsUrl =
     apiServer + '/api/project/user/accepted?userid=';
-String userOffers = apiServer + '/api/project/offer/u';
-String updateProfileUrl = apiServer + '/api/user/update';
+String userDoneProjectsUrl = apiServer + '/api/project/user/done?userid=';
+String userOffersUrl = apiServer + '/api/project/offer/user';
+String updateProfileUrl = apiServer + '/api/user';
 
 //search user by id
 String searchUserUrl = apiServer + '/api/user/byid?userid=';

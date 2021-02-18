@@ -1,13 +1,13 @@
 class ProjectModel {
-  final String title;
-  final String description;
-  final String shortDescription;
-  final String id;
-  final String authorId;
-  final String freelanceId;
-  final String createdAt;
-  final bool isAssigned;
-
+  String title;
+  String description;
+  String shortDescription;
+  String id;
+  String authorId;
+  String freelanceId;
+  String createdAt;
+  bool isAssigned;
+  double price;
 
   ProjectModel(
       {this.title,
@@ -17,6 +17,8 @@ class ProjectModel {
       this.authorId,
       this.freelanceId,
       this.createdAt,
-      this.isAssigned
+      this.isAssigned,
+      this.price,
       });
+      
 }
