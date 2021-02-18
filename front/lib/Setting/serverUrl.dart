@@ -1,4 +1,4 @@
-String apiServer = 'http://138.201.6.240:8001';
+String apiServer = 'http://localhost:8080';
 String mainServer = 'http://138.201.6.240';
 String debugServer = 'http://192.168.1.104';
 
